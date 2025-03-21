@@ -1,0 +1,36 @@
+# Visual Studio Code Settings
+.vscode/*
+
+# Laravel external libraries and dependencies
+/vendor/
+
+# Node.js external libraries and dependencies and log
+#/node_modules/
+#npm-debug.log
+
+# Yarn JS package manager files 
+#yarn-error.log
+
+# Laravel 5 & Lumen specific
+/public/storage
+#/public/hot
+
+# Confidential files
+#storage/*.key
+.env
+.env.backup
+.env.production
+.env.netson
+#auth.json
+
+# Laravel compiled assets
+#/public/build
+
+# Laravel Pail log files
+#/storage/pail
+
+# Editor settings
+.editorconfig
+
+# php shell for Visual Studio Code
+.php/
