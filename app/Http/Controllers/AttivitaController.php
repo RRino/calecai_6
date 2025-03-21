@@ -132,19 +132,32 @@ class AttivitaController extends Controller
     }
 
 
-    public function index(Request $request, $dataOggi = null, $categoria): \Illuminate\Contracts\View\View
+    public function index(Request $request): \Illuminate\Contracts\View\View
     {
       
+        $data = $request->input('date');
+        $categoria = $request->input('attivita');
+        $anno                 = now()->year;
+        $dataOggius = Carbon::now()->toDateString(); 
+        if($data == 'dataOggi'){
+            // crea data oggi europea
+            $dataOggi = Carbon::createFromFormat("Y-m-d", $dataOggius)->format("d-m-Y");
+        }else{
+            $dataOggi = $data.$anno;// aggiunge alla data del mese recuperato dalla tabella tipo_data, l'anno
+        }
+       
+
+
             $dataOggi             = $dataOggi ?? now()->format('Y-m-d'); // Usa la data di oggi se non è fornita
             $viewData             = [];
-            $dataOggius           = Carbon::createFromFormat("d-m-Y", $dataOggi)->format("Y-m-d");
+          //  $dataOggius           = Carbon::createFromFormat("d-m-Y", $dataOggi)->format("Y-m-d");
             $viewData['dataoggi'] = $dataOggi;
-            $user                 = Auth::user();
-            $anno                 = now()->year;
-            $anno_attivita        = Carbon::parse($dataOggius)->year;
-            //$user = User::find(1);
-            // $rol = $user->role;
-            // Cache::flush();
+         //   $user                 = Auth::user();
+        //    $anno                 = now()->year;
+            //$anno_attivita        = Carbon::parse($dataOggius)->year;
+
+         //  dd($dataOggi, $categoria,$dataOggius);
+           
     
             // seleziona tipo_attivita 99 = tutti, $categoria = tipo_attivita
             if ($categoria == 99) {

@@ -148,7 +148,7 @@ Route::controller(AttivitaFormController::class)->group(function () {
 });
 
 Route::controller(AttivitaController::class)->group(function () {
-    Route::get('/attivita/index/{categoria}/{dataOggi}', 'index')->name('attivita/index');
+    Route::post('/attivita/index', 'index')->name('attivita/index');
     //Route::get('/attivita/index/{data}/{otherParam}', [AttivitaController::class, 'index'])->name('attivita.index');
     Route::get('/attivita/singolo/{id}', 'singolo')->name('attivita/singolo');
     Route::get('/attivita/list', 'list')->name('attivita/list');

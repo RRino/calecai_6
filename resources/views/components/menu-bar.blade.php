@@ -61,178 +61,89 @@
         }
 
         .btrova {
-            margin-top: -5px;
+            margin-top: 5px;
 
         }
 
-        input#dataOggi_index {
-            border: none !important;
-            background: #cccccc;
-        }
+
 
 
 
         .dropdown {
             position: relative;
             display: inline-block;
-        }
-
-        .dropdown-toggle {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .dropdown-toggle:hover {
-            background-color: #0056b3;
-        }
-
-        .dropdown-menu {
-            display: none;
-            /* Nascosto di default */
-            position: absolute;
-            background-color: white;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-            border-radius: 5px;
-            z-index: 1;
-        }
-
-        .dropdown-item {
-            color: #333;
-            padding: 10px 15px;
-            text-decoration: none;
-            display: block;
-        }
-
-        .dropdown-item:hover {
-            background-color: #f1f1f1;
-            color: #000;
+            margin-left: 10px;
         }
     </style>
 </head>
 @php
     use Carbon\Carbon;
+    use App\Models\TipoAttivita;
+    use App\Models\TipoDate;
     $user = auth()->user();
     $dataOggius = Carbon::now()->toDateString(); // Ottiene la data di oggi nel formato 'YYYY-MM-DD'
     $dataOggi = Carbon::createFromFormat('Y-m-d', $dataOggius)->format('d-m-Y');
+    $data = null;
+    $attivita = TipoAttivita::where('published', 1)->get();
+    $date = TipoDate::where('published', 1)->get();
+
+    $itemSelezionatoData = null; // Valore di default
+    $itemSelezionatoAttivita = null; // Valore di default
+
 @endphp
+
 
 <body>
     <div class="menu-bar">
-        <div class="row rbtn">
-            <nav>
-                <ul>
+        @if (isset($user) &&
+                ($user->role == 'editor' || $user->role == 'amministratore' || $user->role == 'editor_accompagnatore'))
+            <li><a class="btn btn-success btn-sm" href="{{ url('/form/page1') }}">Aggiungi Attività</a></li>
+            <li>
+                <a type="button" class="btn btn-primary btn-sm" href="{{ url('/attivita/list') }}">Lista
+                    Attività
+                </a>
+            </li>
+        @endif
 
+        <form method="post" action="{{ url('/attivita/index') }}">
+            @csrf
+            <div class="dropdown">
+                <div class="col">
+                    <label for="attivita">Seleziona Attività:</label>
+                    <select name="attivita" id="attivita" class="form-control">
+                        @foreach ($attivita as $itema)
+                            <option value="{{ $itema->tipo_attivita }}">{{ $itema->nome }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="date">Seleziona Data:</label>
+                        <select name="date" id="date" class="form-control">
+                            @foreach ($date as $itemd)
+                                <option value="{{ $itemd->nome }}">{{ $itemd->descrizione }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="btrova">
+                <button type="submit" class="btn btn-primary">Visualizza</button>
+            </div>
+        </form>
 
-                    @if (isset($user) &&
-                            ($user->role == 'editor' || $user->role == 'amministratore' || $user->role == 'editor_accompagnatore'))
-                        <li><a class="btn btn-success btn-sm" href="{{ url('/form/page1') }}">Aggiungi Attività</a></li>
-                        <li>
-                            <a type="button" class="btn btn-primary btn-sm" href="{{ url('/attivita/list') }}">Lista
-                                Attività
-                            </a>
-                        </li>
-                    @endif
-
-
-                    <li>
-                        <div style="padding: 5px;">
-                            <div class=" btrova">
-                                <a id="attivitaLink" class="btn btn-success btn-sm"
-                                    href="{{ url('/attivita/index/' . $dataOggi . '/99') }}">Trova da Data </a>
-                                <input type="text" class="date form-control" id="dataOggi_index" name="dataOggi_menu"
-                                    value="{{ $dataOggi }}">
-                            </div>
-                        </div>
-                    </li>
-
-                    <div class="menu" id="menu"><span style="font-weight:700;margin-top:10px;">Data</span> </div>
-
-                    <script>
-                        // Passa l'APP_URL dal server al JavaScript
-                        var baseUrl = "{{ url('/') }}"; // Usa url() per ottenere l'URL base
-
-                        // Funzione per aggiornare il link "Trova" e simulare la sua azione
-                        function updateDataOggi(newDate) {
-                            const inputField = document.getElementById('dataOggi_index');
-                            inputField.value = newDate;
-
-                            const link = document.getElementById('attivitaLink');
-                            link.href = baseUrl + '/attivita/index/' + newDate + '/99';
-
-                            console.log('Link aggiornato:', link.href);
-                        }
-
-                        // Funzione per gestire lo stato "attivo"
-                        function setActiveLink(link) {
-                            // Rimuovi la classe "active" da tutti i link
-                            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
-
-                            // Aggiungi la classe "active" al link cliccato
-                            link.classList.add('active');
-                        }
-
-                        // Esempio di menu con link
-                        const menu = document.getElementById('menu');
-
-                        // Esempio: Aggiungi un link Anno
-                        const yearLink = document.createElement('a');
-                        yearLink.textContent = new Date().getFullYear();
-                        yearLink.className = "menu-item";
-                        yearLink.onclick = function() {
-                            setActiveLink(this); // Imposta il link attivo
-                            updateDataOggi(`01-01-${yearLink.textContent}`); // Aggiorna i dati
-                        };
-                        menu.appendChild(yearLink);
-
-                        // Aggiungi altri link (esempio per i mesi)
-                        const months = ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
-                            'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'
-                        ];
-
-                        months.forEach((month, index) => {
-                            const monthLink = document.createElement('a');
-                            monthLink.textContent = month;
-                            monthLink.className = "menu-item";
-                            monthLink.onclick = function() {
-                                setActiveLink(this); // Imposta il link attivo
-                                updateDataOggi(
-                                    `01-${String(index + 1).padStart(2, '0')}-${new Date().getFullYear()}`); // Aggiorna i dati
-                            };
-                            menu.appendChild(monthLink);
-                        });
-
-                        // Pulsante per "Data di Oggi"
-                        const todayLink = document.createElement('a');
-                        todayLink.textContent = "Data di Oggi";
-                        todayLink.className = "menu-item";
-                        todayLink.onclick = function() {
-                            setActiveLink(this); // Imposta il link attivo
-                            const today = new Date();
-                            const formattedToday =
-                                `${String(today.getDate()).padStart(2, '0')}-${String(today.getMonth() + 1).padStart(2, '0')}-${today.getFullYear()}`;
-                            updateDataOggi(formattedToday); // Aggiorna i dati
-                        };
-                        menu.appendChild(todayLink);
-                    </script>
-                    {{ $slot }}
-                </ul>
-            </nav>
-            @if (auth()->check())
-            @if($user->role == 'amministratore')
+        @if (auth()->check())
+            @if ($user->role == 'amministratore')
                 <div class="dropdown">
                     <button class="dropdown-toggle" id="dropdownMenuButton">Menu Amministrazione</button>
                     <ul class="dropdown-menu" id="dropdownMenu">
-{{--
-                        <li><a class="dropdown-item" href="{{ url('/get_from_dbcai') }}">Carica attività<br>caibo.it da
-                                data di oggi</a>
-                        </li> --}}
-                        <li><a class="dropdown-item" href="{{ url('/form_import_sezioni') }}"  target="_blank">Carica Sezioni<br>CAI da
+                        
+                    <li><a class="dropdown-item" href="{{ url('/get_from_dbcai') }}">Carica attività<br>caibo.it da
+                            data di oggi</a>
+                    </li> 
+                        <li><a class="dropdown-item" href="{{ url('/form_import_sezioni') }}" target="_blank">Carica
+                                Sezioni<br>CAI da
                                 excel </a>
                         </li>
 
@@ -246,15 +157,15 @@
                         </li>
                     </ul>
                 </div>
-                @endif
             @endif
-        </div>
+        @endif
     </div>
-
-
 </body>
 
 <x-footer />
+
+</html>
+
 
 <script>
     // Seleziona gli elementi
