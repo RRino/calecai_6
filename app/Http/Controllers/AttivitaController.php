@@ -152,15 +152,9 @@ class AttivitaController extends Controller
             $viewData             = [];
           //  $dataOggius           = Carbon::createFromFormat("d-m-Y", $dataOggi)->format("Y-m-d");
             $viewData['dataoggi'] = $dataOggi;
-         //   $user                 = Auth::user();
-        //    $anno                 = now()->year;
-            //$anno_attivita        = Carbon::parse($dataOggius)->year;
 
-         //  dd($dataOggi, $categoria,$dataOggius);
-           
-    
             // seleziona tipo_attivita 99 = tutti, $categoria = tipo_attivita
-            if ($categoria == 99) {
+            if ($categoria == 10) {
                 // se utente non login o se login come utente
                 $viewData['attivita'] = Attivita::where('published', 1)
                     ->where(function ($query) use ($dataOggius) {

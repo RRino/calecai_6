@@ -44,7 +44,7 @@ class Eventi extends Seeder
         DB::table('tipo_attivitas')->insert(['id' => 7, 'tipo_attivita' => 7,  'order' => 7,'nome' => 'Trekkingcoltreno','descrizione' => 'Link al sito Trekking col treno']);
         DB::table('tipo_attivitas')->insert(['id' => 8, 'tipo_attivita' => 8,  'order' => 8,'nome' => 'Eventi CAIBO','descrizione' => 'Eventi vari, cinema, incontri in sede,riunioni, aggiornamenti ecc ... ']);
         DB::table('tipo_attivitas')->insert(['id' => 9, 'tipo_attivita' => 9,  'order' => 9,'nome' => 'Trekking Residenziali','descrizione' => 'Trekkig in Italia e al\'estero di piu giorni con base in singolo luogo']);
-        DB::table('tipo_attivitas')->insert(['id' => 10, 'tipo_attivita' => 10,  'order' => 10,'nome' => '99','descrizione' => 'Tutte le attività']);
+        DB::table('tipo_attivitas')->insert(['id' => 10, 'tipo_attivita' => 10,  'order' => 10,'nome' => 'Tutti','descrizione' => 'Tutte le attività']);
  
 
         DB::table('catids')->truncate();
