@@ -180,8 +180,7 @@ class AttivitaController extends Controller
                             $query->where('calendario', 0)
                                 ->whereDate('data_inizio', '>=', $dataOggius);
                         })->orWhere(function ($query) use ($dataOggius) {
-                            //$query->where('tipo_attivita', 2)
-                            // usa data_fine se il campo 'calendario' contiene 1
+                            // usa data_fine se il campo 'calendario' contiene 1 utilizza data fine per filtrare le attivita da visualizzare
                             $query->where('calendario', '>=', 1)
                                 ->whereDate('data_fine', '>=', $dataOggius);
                         })->orWhere(function ($query) use ($dataOggius) {
@@ -191,9 +190,9 @@ class AttivitaController extends Controller
                     })
                     ->get();
             }
-    
+
             return view('attivita.index')->with("viewData", $viewData);
-        
+
     }
 
     public function singolo($id)
