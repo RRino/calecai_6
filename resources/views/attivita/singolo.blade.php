@@ -84,6 +84,10 @@
         display: block;
     }
 
+    .card-title {
+        text-align: center;
+    }
+
     /* Responsive Styles */
     @media (max-width: 1200px) {
         .pre {
@@ -123,33 +127,39 @@
 <div id="main">
 
     <body>
-        <x-logocai_anim/>
-            <x-menu-bar-home>
-        <div class="container-sm">
-            
-                {{--  <li><a class="btn btn-success btn-sm" href="{{ url('/') }}">Dashboard</a></li>--}}
+        <x-logocai_anim />
+        <x-menu-bar-home>
+            <div class="container-sm">
+
+                {{--  <li><a class="btn btn-success btn-sm" href="{{ url('/') }}">Dashboard</a></li> --}}
 
                 <li><a class="btn btn-primary btn-sm" href="{{ url('/attivita/index/' . $dataOggi . '/99') }}">Chiudi</a>
                 </li>
 
-            </x-menu-bar-home>
+        </x-menu-bar-home>
 
 
-            <div class="row justify-content-md-center ">
-                <div class="col col-lg-6">
+        <div class="row justify-content-md-center ">
+            <div class="col col-lg-6">
 
-                    @if (isset($attivita->image_file) && $attivita->image_file != null)
-                        <img class="img_box" src="{{ asset('storage/imgtrek/' . $attivita->image_file) }}"
-                            alt="attivita cai bologna">
-                    @else
-                        {{ 'IMMAGINE MANCANTE' }}
-                    @endif
+                @if (isset($attivita->image_file) && $attivita->image_file != null)
+                    <img class="img_box" src="{{ asset('storage/imgtrek/' . $attivita->image_file) }}"
+                        alt="attivita cai bologna">
+                @else
+                    {{ 'IMMAGINE MANCANTE' }}
+                @endif
 
-                    <div class="pre">
-                        <div class="card-body">
-                            <a href="{{ url('/attivita/singolo' . '/' . $attivita->id) }}">
-                                <h5 class="card-title">{{ $attivita->titolo }}</h5>
+                <div class="pre">
+                    <div class="card-body">
+                        <br>
+                        <div class="card-text">
+                            <h5 class="card-title">{{ $attivita->titolo }}</h5>
                         </div>
+                        @if ($attivita->sottotitolo != null)
+                            <div class="card-text">
+                                <p>{{ $attivita->sottotitolo }}</p>
+                            </div>
+                        @endif
                         <hr>
                         <div class="card-text" style="height: auto;">
                             <p>{{ $attivita->note }}</p>
@@ -210,20 +220,20 @@
                                 Il tuo browser non supporta gli iframe.
                             </iframe>
                         @endif
-<!-- pdf su server esterno -->
+                        <!-- pdf su server esterno -->
                         @if ($attivita->tipo_volantino == 1)
                             link esterno
                         @endif
-                        0
+                        <hr>
                         {{-- <button type="button" class="btn btn-primary btn-sm">
                             <a class="dropdown-item" target="_blank"
                                 href="{{ url("/show-pdf" . "/" . $attivita->pdf_file.'/'.$attivita->id) }}">Volantino</a>
                         </button> --}}
 
-                        <button type="button" class="btn btn-secondary btn-sm">
-                            <a class="btn btn-primary btn-sm"
-                                href="{{ url('/attivita/index/' . $dataOggi . '/99') }}">Chiudi</a>
-                        </button>
+                        
+                        <button class="btn btn-danger" onclick="window.close();">Chiudi Pagina</button>
+
+
 
                     </div>
                 </div>

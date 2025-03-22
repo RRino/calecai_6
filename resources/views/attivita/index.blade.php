@@ -213,9 +213,9 @@ $attivita = $viewData['attivita'];
                     <!-- visualizza tipo di attivita nel box in alto -->
                     @foreach ($attivita as $attiv)
                         <div class="card carta">
-                            @if ($attiv->tipo_attivita == 0)
+                            @if (in_array($attiv->tipo_attivita, [0]))
                                 @include('parziali.calendario', ['attivita' => $attiv])
-                            @elseif ($attiv->tipo_attivita == 1)
+                            @elseif (in_array($attiv->tipo_attivita, [ 1,2,3,4,5,6,7,8,9]))
                                 @include('parziali.trekking', ['attivita' => $attiv])
                             @endif
                         </div>

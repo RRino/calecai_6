@@ -42,7 +42,7 @@ $tipovolantino = TipoVolantino::where('published', 1)->get();
         </div>
         <div>
             @if (isset($attiv->image_file) && $attiv->image_file != null)
-                <a href="{{ url('/attivita/singolo' . '/' . $attiv->id) }}">
+                <a href="{{ url('/attivita/singolo' . '/' . $attiv->id) }}" target="_blank">
                     <img class="img_box" src="{{ asset('storage/imgtrek/' . $attiv->image_file) }}"
                         alt="attivita cai bologna" style="height: 270px;"></a>
             @else
@@ -51,9 +51,9 @@ $tipovolantino = TipoVolantino::where('published', 1)->get();
         </div>
 
         <div style="min-height: 3em;">
-            <a href="{{ url('/attivita/singolo' . '/' . $attiv->id) }}"><strong style="color: darkgreen; font-size: 14px; font-weight: 770;"> {{ $attiv->titolo }}</strong></a><br>
+            <a href="{{ url('/attivita/singolo' . '/' . $attiv->id) }}" target="_blank"><strong style="color: darkgreen; font-size: 14px; font-weight: 770;"> {{ $attiv->titolo }}</strong></a><br>
         
-        <a href="{{ url('/attivita/singolo' . '/' . $attiv->id) }}"> <img class="ima" src="/img/lente.png" alt="Lente" ></a>
+        <a href="{{ url('/attivita/singolo' . '/' . $attiv->id) }}"  target="_blank"><img class="ima" src="/img/lente.png" alt="Lente" ></a>
     </div>
         <div class="note" style="min-height: 3em;">
             <!-- Note sottotitolo-->

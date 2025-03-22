@@ -43,7 +43,7 @@ $tipovolantino = TipoVolantino::where('published', 1)->get();
         </div>
         <div>
             @if (isset($attiv->image_file) && $attiv->image_file != null)
-                <a href="{{ url('/attivita/singolo' . '/' . $attiv->id) }}">
+                <a href="{{ url('/attivita/singolo' . '/' . $attiv->id) }}" target="_blank">
                     <img class="img_box" src="{{ asset('storage/imgtrek/' . $attiv->image_file) }}"
                         alt="attivita cai bologna" style="height: 270px;"></a>
             @else
