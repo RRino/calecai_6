@@ -1,3 +1,23 @@
-node_modules
-.env
+# Visual Studio Code Settings
+.vscode/*
 
+# Laravel external libraries and dependencies
+/vendor/
+
+# Node.js external libraries, dependencies and log
+/node_modules/
+
+# Laravel specific
+/public/storage
+
+# Confidential files
+.env
+.env.backup
+.env.production
+.env.netson
+
+# Editor settings
+.editorconfig
+
+# php shell for Visual Studio Code
+.php/
