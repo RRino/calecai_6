@@ -8,6 +8,7 @@
         use Carbon\Carbon;
 
         $user = auth()->user();
+        $dataOggius = Carbon::now()->toDateString(); 
         $tipoattivita = TipoAttivita::where('published', 1)->get();
         $scelteinterne = TipoScelteInterne::where('published', 1)->get();
         $tipoiscrizione = TipoIscrizione::where('published', 1)->get();

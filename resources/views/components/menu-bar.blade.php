@@ -65,10 +65,17 @@
 
         }
 
+#date{
+    background: #ccb;
+}
 
-
-
-
+#attivita{
+    background: #ccb;
+}
+.invia{
+    margin-left:10px;
+    margin-top:5px;
+}
         .dropdown {
             position: relative;
             display: inline-block;
@@ -116,9 +123,10 @@
                         @endforeach
                     </select>
                 </div>
+                <br>
                 <div class="row">
                     <div class="col">
-                        <label for="date">Seleziona Data:</label>
+                        <label for="date">Seleziona Da Data:</label>
                         <select name="date" id="date" class="form-control">
                             @foreach ($date as $itemd)
                                 <option value="{{ $itemd->nome }}">{{ $itemd->descrizione }}</option>
@@ -129,7 +137,7 @@
             </div>
             <br>
             <div class="btrova">
-                <button type="submit" class="btn btn-primary">Visualizza</button>
+                <button type="submit" class="btn btn-primary invia">Visualizza</button>
             </div>
         </form>
 
