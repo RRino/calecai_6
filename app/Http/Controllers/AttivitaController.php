@@ -16,7 +16,74 @@ class AttivitaController extends Controller
      * Summary of importa
      * @return void
      */
-    public function index_ok(Request $request, $dataOggi = null, $categoria): \Illuminate\Contracts\View\View
+
+     public function index(Request $request): \Illuminate\Contracts\View\View
+    {
+      
+        $data = $request->input('date');
+        $categoria = $request->input('attivita');
+        $anno                 = now()->year;
+        
+        if($data == 'dataOggi'){
+            $dataOggius = Carbon::now()->toDateString(); 
+            // crea data oggi europea
+            //$dataOggius = Carbon::createFromFormat("Y-m-d", $dataOggius)->format("d-m-Y");
+        }else{
+            $dataOggi = "{$data}{$anno}"; // aggiunge alla data del mese recuperato dalla tabella tipo_data, l'anno
+        }
+       
+
+
+           // $dataOggi             = $dataOggi ?? now()->format('Y-m-d'); // Usa la data di oggi se non è fornita
+            $viewData             = [];
+            $dataOggius           = Carbon::createFromFormat("d-m-Y", $dataOggi)->format("Y-m-d");
+            $viewData['dataoggi'] = $dataOggi;
+
+
+            $attivita = Attivita::where('published', 1);
+
+            // seleziona tipo_attivita 99 = tutti, $categoria = tipo_attivita
+            if ($categoria == 10) {
+               if($attivita->calendario == 0){
+                $viewData['attivita'] = $attivita->where(function ($query) use ($dataOggius) {
+                    ->where(function ($query) use ($dataOggius) {
+                        $query->where(function ($query) use ($dataOggius) {
+                            $query->where('calendario', 0)
+                                ->whereDate('data_inizio', '>=', $dataOggius);
+                        })->orWhere(function ($query) use ($dataOggius) {
+                            //$query->where('tipo_attivita', 2)// calendario
+                            $query->where('calendario', '>=', 1)
+                                ->whereDate('data_fine', '>=', $dataOggius);
+                        })->orWhere(function ($query) use ($dataOggius) {
+                            $query->where('tipo_attivita', 0)
+                                ->whereDate('data_fine', '>=', $dataOggius);
+                        });
+                    })
+                    ->get();
+            } else {
+                $viewData['attivita'] = Attivita::where('published', 1)
+                    ->where('tipo_attivita', $categoria)
+                    ->where(function ($query) use ($dataOggius) {
+                        // usa data_inizio per filtrare le attivita da visualizzare
+                        $query->where(function ($query) use ($dataOggius) {
+                            $query->where('calendario', 0)
+                                ->whereDate('data_inizio', '>=', $dataOggius);
+                        })->orWhere(function ($query) use ($dataOggius) {
+                            // usa data_fine se il campo 'calendario' contiene 1 utilizza data fine per filtrare le attivita da visualizzare
+                            $query->where('calendario', '>=', 1)
+                                ->whereDate('data_fine', '>=', $dataOggius);
+                        })->orWhere(function ($query) use ($dataOggius) {
+                            $query->where('tipo_attivita', 0)
+                                ->whereDate('data_fine', '>=', $dataOggius);
+                        });
+                    })
+                    ->get();
+            }
+
+            return view('attivita.index')->with("viewData", $viewData);
+
+    }
+    public function index_x(Request $request, $dataOggi = null, $categoria): \Illuminate\Contracts\View\View
     {
         $dataOggi             = $dataOggi ?? now()->format('Y-m-d'); // Usa la data di oggi se non è fornita
         $viewData             = [];
@@ -132,25 +199,26 @@ class AttivitaController extends Controller
     }
 
 
-    public function index(Request $request): \Illuminate\Contracts\View\View
+    public function index_xx(Request $request): \Illuminate\Contracts\View\View
     {
       
         $data = $request->input('date');
         $categoria = $request->input('attivita');
         $anno                 = now()->year;
-        $dataOggius = Carbon::now()->toDateString(); 
+        
         if($data == 'dataOggi'){
+            $dataOggius = Carbon::now()->toDateString(); 
             // crea data oggi europea
-            $dataOggi = Carbon::createFromFormat("Y-m-d", $dataOggius)->format("d-m-Y");
+            //$dataOggius = Carbon::createFromFormat("Y-m-d", $dataOggius)->format("d-m-Y");
         }else{
-            $dataOggi = $data.$anno;// aggiunge alla data del mese recuperato dalla tabella tipo_data, l'anno
+            $dataOggi = "{$data}{$anno}"; // aggiunge alla data del mese recuperato dalla tabella tipo_data, l'anno
         }
        
 
 
-            $dataOggi             = $dataOggi ?? now()->format('Y-m-d'); // Usa la data di oggi se non è fornita
+           // $dataOggi             = $dataOggi ?? now()->format('Y-m-d'); // Usa la data di oggi se non è fornita
             $viewData             = [];
-          //  $dataOggius           = Carbon::createFromFormat("d-m-Y", $dataOggi)->format("Y-m-d");
+            $dataOggius           = Carbon::createFromFormat("d-m-Y", $dataOggi)->format("Y-m-d");
             $viewData['dataoggi'] = $dataOggi;
 
             // seleziona tipo_attivita 99 = tutti, $categoria = tipo_attivita
