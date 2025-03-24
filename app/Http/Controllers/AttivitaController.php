@@ -18,71 +18,59 @@ class AttivitaController extends Controller
      */
 
      public function index(Request $request): \Illuminate\Contracts\View\View
-    {
-      
-        $data = $request->input('date');
-        $categoria = $request->input('attivita');
-        $anno                 = now()->year;
-        
-        if($data == 'dataOggi'){
-            $dataOggius = Carbon::now()->toDateString(); 
-            // crea data oggi europea
-            //$dataOggius = Carbon::createFromFormat("Y-m-d", $dataOggius)->format("d-m-Y");
-        }else{
-            $dataOggi = "{$data}{$anno}"; // aggiunge alla data del mese recuperato dalla tabella tipo_data, l'anno
-        }
-       
+     {
+         $data = $request->input('date');
+         $categoria = $request->input('attivita');
+         $anno                 = now()->year;
+         $dataOggius = Carbon::now()->toDateString(); 
+         if($data == 'dataOggi'){
+             // crea data oggi europea
+             $data = Carbon::createFromFormat("Y-m-d", $dataOggius)->format("d-m-Y");
+         }else{
+             $data = $data.$anno;// aggiunge alla data del mese recuperato dalla tabella tipo_data, l'anno
+         }
 
-
-           // $dataOggi             = $dataOggi ?? now()->format('Y-m-d'); // Usa la data di oggi se non è fornita
-            $viewData             = [];
-            $dataOggius           = Carbon::createFromFormat("d-m-Y", $dataOggi)->format("Y-m-d");
-            $viewData['dataoggi'] = $dataOggi;
-
-
-            $attivita = Attivita::where('published', 1);
-
-            // seleziona tipo_attivita 99 = tutti, $categoria = tipo_attivita
-            if ($categoria == 10) {
-               if($attivita->calendario == 0){
-                $viewData['attivita'] = $attivita->where(function ($query) use ($dataOggius) {
-                    ->where(function ($query) use ($dataOggius) {
-                        $query->where(function ($query) use ($dataOggius) {
-                            $query->where('calendario', 0)
-                                ->whereDate('data_inizio', '>=', $dataOggius);
-                        })->orWhere(function ($query) use ($dataOggius) {
-                            //$query->where('tipo_attivita', 2)// calendario
-                            $query->where('calendario', '>=', 1)
-                                ->whereDate('data_fine', '>=', $dataOggius);
-                        })->orWhere(function ($query) use ($dataOggius) {
-                            $query->where('tipo_attivita', 0)
-                                ->whereDate('data_fine', '>=', $dataOggius);
-                        });
-                    })
-                    ->get();
-            } else {
+             $viewData             = [];
+             // converte data in formato usa
+             $data          = Carbon::createFromFormat("d-m-Y", $data)->format("Y-m-d");
+             // seleziona tipo_attivita 10 = tutti, $categoria = tipo_attivita
+             if ($categoria == 10) {
                 $viewData['attivita'] = Attivita::where('published', 1)
-                    ->where('tipo_attivita', $categoria)
-                    ->where(function ($query) use ($dataOggius) {
-                        // usa data_inizio per filtrare le attivita da visualizzare
-                        $query->where(function ($query) use ($dataOggius) {
-                            $query->where('calendario', 0)
-                                ->whereDate('data_inizio', '>=', $dataOggius);
-                        })->orWhere(function ($query) use ($dataOggius) {
-                            // usa data_fine se il campo 'calendario' contiene 1 utilizza data fine per filtrare le attivita da visualizzare
-                            $query->where('calendario', '>=', 1)
-                                ->whereDate('data_fine', '>=', $dataOggius);
-                        })->orWhere(function ($query) use ($dataOggius) {
-                            $query->where('tipo_attivita', 0)
-                                ->whereDate('data_fine', '>=', $dataOggius);
-                        });
-                    })
-                    ->get();
+                ->where(function ($query) use ($data) {
+                    $query->where(function ($query) use ($data) {
+                        $query->where('calendario', 0)
+                            ->whereDate('data_inizio', '>=', $data);
+                    })->orWhere(function ($query) use ($data) {
+                        //$query->where('tipo_attivita', 2)// calendario
+                        $query->where('calendario', '>=', 1)
+                            ->whereDate('data_fine', '>=', $data);
+                    });
+                })
+                ->get();
+             } else {
+                $viewData['attivita'] = Attivita::where('published', 1)
+                ->where('tipo_attivita', $categoria)
+                ->where(function ($query) use ($data) {
+                    $query->where(function ($query) use ($data) {
+                        
+                        $query->where('calendario', 0)
+                            ->whereDate('data_inizio', '>=', $data);
+                    })->orWhere(function ($query) use ($data) {
+                       
+                        $query->where('calendario', '>=', 1)
+                            ->whereDate('data_fine', '>=', $data);
+                    });
+                })
+                ->get();
+    // dd($viewData);
             }
+ 
+             return view('attivita.index')->with("viewData", $viewData);
+         
+     }
+     
 
-            return view('attivita.index')->with("viewData", $viewData);
 
-    }
     public function index_x(Request $request, $dataOggi = null, $categoria): \Illuminate\Contracts\View\View
     {
         $dataOggi             = $dataOggi ?? now()->format('Y-m-d'); // Usa la data di oggi se non è fornita
@@ -111,8 +99,6 @@ class AttivitaController extends Controller
                                 ->whereDate('data_fine', '>=', $dataOggius);
                         });
                     })
-                // ->whereRaw('LENGTH(titolo) > 2')
-                // ->whereRaw('LENGTH(descrizione) > 3')
                     ->get();
             } else {
                 if ($user->is_admin == 1 || $user->role == 'editor' || $user->role == 'accompagnatore') {

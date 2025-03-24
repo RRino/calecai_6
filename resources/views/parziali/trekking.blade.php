@@ -8,13 +8,10 @@
         use Carbon\Carbon;
 
         $user = auth()->user();
-
-        $dataOggi = $viewData['dataoggi']; // Recupera la data dall'input o usa la data di oggi come default
-$dataOggius = Carbon::createFromFormat('d-m-Y', $dataOggi)->format('Y-m-d');
-$tipoattivita = TipoAttivita::where('published', 1)->get();
-$scelteinterne = TipoScelteInterne::where('published', 1)->get();
-$tipoiscrizione = TipoIscrizione::where('published', 1)->get();
-$tipovolantino = TipoVolantino::where('published', 1)->get();
+        $tipoattivita = TipoAttivita::where('published', 1)->get();
+        $scelteinterne = TipoScelteInterne::where('published', 1)->get();
+        $tipoiscrizione = TipoIscrizione::where('published', 1)->get();
+        $tipovolantino = TipoVolantino::where('published', 1)->get();
 
     @endphp
 

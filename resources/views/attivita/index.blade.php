@@ -10,9 +10,6 @@
 
         $user = auth()->user();
 
-        $dataOggi = $viewData['dataoggi']; // Recupera la data dall'input o usa la data di oggi come default
-$dataOggius = Carbon::createFromFormat('d-m-Y', $dataOggi)->format('Y-m-d');
-
 $tipoattivita = TipoAttivita::where('published', 1)->get();
 //dd($tipoattivita);
 //$tipoattivita = TipoAttivita::where('published', 1) ->whereNotIn('id', [0,1]) ->pluck('nome') ->toArray();
@@ -224,9 +221,6 @@ $attivita = $viewData['attivita'];
                 </div>
 
             </div>
-
-
-
         </div>
 
 
