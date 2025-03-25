@@ -49,8 +49,8 @@ class FormDati extends Seeder
         DB::table('tipo_scelte_internes')->insert(['id' => 1, 'tipo_scelte' => 1, 'scelta' => '0', 'descrizione' => 'x']);
     
         DB::table('tipo_dates')->truncate();
-        DB::table('tipo_dates')->insert(['id' => 0, 'tipo_date' => 0, 'nome' => 'dataOggi', 'descrizione' => 'Data di oggi']);
-        DB::table('tipo_dates')->insert(['id' => 1, 'tipo_date' => 1, 'nome' => '01-01-', 'descrizione' => ' Gennaio']);
+        DB::table('tipo_dates')->insert(['id' => 0, 'tipo_date' => 0, 'nome' => 'dataOggi', 'descrizione' => 'Oggi']);
+        DB::table('tipo_dates')->insert(['id' => 1, 'tipo_date' => 1, 'nome' => '01-01-', 'descrizione' => 'Gennaio']);
         DB::table('tipo_dates')->insert(['id' => 2, 'tipo_date' => 2, 'nome' => '01-02-', 'descrizione' => 'Febbraio']);
         DB::table('tipo_dates')->insert(['id' => 3, 'tipo_date' => 3, 'nome' => '01-03-', 'descrizione' => 'Marzo']);
         DB::table('tipo_dates')->insert(['id' => 4, 'tipo_date' => 4, 'nome' => '01-04-', 'descrizione' => 'Aprile']);
@@ -62,7 +62,7 @@ class FormDati extends Seeder
         DB::table('tipo_dates')->insert(['id' => 10, 'tipo_date' => 10, 'nome' => '01-10-', 'descrizione' => 'Ottobre']);
         DB::table('tipo_dates')->insert(['id' => 11, 'tipo_date' => 11, 'nome' => '01-11-', 'descrizione' => 'Novembre']);
         DB::table('tipo_dates')->insert(['id' => 12, 'tipo_date' => 12, 'nome' => '01-12-', 'descrizione' => 'Dicembre']);
-        DB::table('tipo_dates')->insert(['id' => 13, 'tipo_date' => 13, 'nome' => 'dataDomani', 'descrizione' => 'Data di domani']);
-        DB::table('tipo_dates')->insert(['id' => 14, 'tipo_date' => 14, 'nome' => 'anno+1', 'descrizione' => 'Tutton l\'anno prossimo']);
+        DB::table('tipo_dates')->insert(['id' => 13, 'tipo_date' => 13, 'nome' => 'dataDomani', 'descrizione' => 'Domani']);
+        DB::table('tipo_dates')->insert(['id' => 14, 'tipo_date' => 14, 'nome' => 'anno+1', 'descrizione' => 'Anno prossimo']);
     }
 }
