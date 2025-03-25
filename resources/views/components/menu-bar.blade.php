@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="it">
 
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -97,6 +98,9 @@
     $itemSelezionatoData = null; // Valore di default
     $itemSelezionatoAttivita = null; // Valore di default
 
+   // $valoreDefaultAttivita = 10; // Valore predefinito per attività
+   // $valoreDefaultData = 'dataOggi';  //date('Y-m-d'); // Data corrente come valore predefinito
+
 @endphp
 
 
@@ -112,12 +116,42 @@
             </li>
         @endif
 
-        <form method="post" action="{{ url('/attivita/index') }}">
+        {{-- <form method="post" action=" url('/attivita/index') ">
             @csrf
             <div class="dropdown">
                 <div class="col">
                     <label for="attivita">Seleziona Attività:</label>
                     <select name="attivita" id="attivita" class="form-control">
+                        <option value="10"  $valoreDefaultAttivita === 10 ? 'selected' : '' >Tutti</option>
+                        @foreach ($attivita as $itema)
+                            <option value=" $itema->tipo_attivita "> $itema->nome </option>
+                        @endforeach
+                    </select>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col">
+                        <label for="date">Seleziona Da Data:</label>
+                        <select name="date" id="date" class="form-control">
+                            <option value=" $valoreDefaultData "  $valoreDefaultData === date('Y-m-d') ? 'selected' : '' >Oggi</option>
+                            @foreach ($date as $itemd)
+                                <option value=" $itemd->nome "> $itemd->descrizione </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="btrova">
+                <button type="submit" class="btn btn-primary invia">Visualizza</button>
+            </div>
+        </form> }}">
+            @csrf
+            <div class="dropdown">
+                <div class="col">
+                    <label for="attivita">Seleziona Attività:</label>
+                    <select name="attivita" id="attivita" class="form-control">
+                        <option value="10" {{ $valoreDefaultAttivita === 10 ? 'selected' : '' }}>Tutti</option>
                         @foreach ($attivita as $itema)
                             <option value="{{ $itema->tipo_attivita }}">{{ $itema->nome }}</option>
                         @endforeach
@@ -128,6 +162,7 @@
                     <div class="col">
                         <label for="date">Seleziona Da Data:</label>
                         <select name="date" id="date" class="form-control">
+                            <option value="{{ $valoreDefaultData }}" {{ $valoreDefaultData === date('Y-m-d') ? 'selected' : '' }}>Oggi</option>
                             @foreach ($date as $itemd)
                                 <option value="{{ $itemd->nome }}">{{ $itemd->descrizione }}</option>
                             @endforeach
@@ -139,6 +174,36 @@
             <div class="btrova">
                 <button type="submit" class="btn btn-primary invia">Visualizza</button>
             </div>
+        </form> --}}
+
+        <form id="autoSubmitForm" method="post" action="{{ url('/attivita/index') }}">
+            @csrf
+            <div class="dropdown">
+                <div class="col">
+                    <label for="attivita">Seleziona Attività:</label>
+                    <select name="attivita" id="attivita" class="form-control">
+                        <option value="Tutti" selected>Tutti</option>
+                        @foreach ($attivita as $itema)
+                            <option value="{{ $itema->tipo_attivita }}">{{ $itema->nome }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col">
+                        <label for="date">Seleziona Da Data:</label>
+                        <select name="date" id="date" class="form-control">
+                            <option value="dataOggi" selected>DataOggi</option>
+                            @foreach ($date as $itemd)
+                                <option value="{{ $itemd->nome }}">{{ $itemd->descrizione }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="btrova">
+                <button type="submit" class="btn btn-primary invia">Visualizza</button>
+            </div>
         </form>
 
         @if (auth()->check())
@@ -146,7 +211,6 @@
                 <div class="dropdown">
                     <button class="dropdown-toggle" id="dropdownMenuButton">Menu Amministrazione</button>
                     <ul class="dropdown-menu" id="dropdownMenu">
-                        
                     <li><a class="dropdown-item" href="{{ url('/get_from_dbcai') }}">Carica attività<br>caibo.it da
                             data di oggi</a>
                     </li> 
@@ -216,4 +280,15 @@
             sessionStorage.setItem("trovaDaDataExecuted", "true");
         }
     });
+</script>
+
+<script>
+    // Quando la pagina è completamente caricata
+    window.onload = function() {
+        // Controlla se il form è già stato inviato
+        if (!sessionStorage.getItem('formSent')) {
+            document.getElementById('autoSubmitForm').submit(); // Invia il form
+            sessionStorage.setItem('formSent', true); // Imposta il flag per evitare il loop
+        }
+    };
 </script>

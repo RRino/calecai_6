@@ -19,10 +19,12 @@ class AttivitaController extends Controller
 
      public function index(Request $request): \Illuminate\Contracts\View\View
      {
+      
          $data = $request->input('date');
          $categoria = $request->input('attivita');
          $anno                 = now()->year;
          $dataOggius = Carbon::now()->toDateString(); 
+       
          if($data == 'dataOggi'){
              // crea data oggi europea
              $data = Carbon::createFromFormat("Y-m-d", $dataOggius)->format("d-m-Y");
@@ -31,10 +33,12 @@ class AttivitaController extends Controller
          }
 
              $viewData             = [];
+
              // converte data in formato usa
-             $data          = Carbon::createFromFormat("d-m-Y", $data)->format("Y-m-d");
+            $data          = Carbon::createFromFormat("d-m-Y", $data)->format("Y-m-d");
+       //  dd($data,$categoria);   
              // seleziona tipo_attivita 10 = tutti, $categoria = tipo_attivita
-             if ($categoria == 10) {
+             if ($categoria == 'Tutti') {
                 $viewData['attivita'] = Attivita::where('published', 1)
                 ->where(function ($query) use ($data) {
                     $query->where(function ($query) use ($data) {
