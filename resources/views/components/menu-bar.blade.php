@@ -93,7 +93,7 @@
     $dataOggi = Carbon::createFromFormat('Y-m-d', $dataOggius)->format('d-m-Y');
     $data = null;
     $attivita = TipoAttivita::where('published', 1)->get();
-    $date = TipoDate::where('published', 1)->get();
+    $date = App\Helpers\DateGenerator::monthsFromToday();
 
     $itemSelezionatoData = null; // Valore di default
     $itemSelezionatoAttivita = null; // Valore di default
@@ -120,7 +120,7 @@
             @csrf
             <div class="dropdown">
                 <div class="col">
-                    <label for="attivita">Seleziona Attività:</label>
+                    <label for="attivita">Seleziona un'attività:</label>
                     <select name="attivita" id="attivita" class="form-control">
                         <option value="10"  $valoreDefaultAttivita === 10 ? 'selected' : '' >Tutti</option>
                         @foreach ($attivita as $itema)
@@ -131,7 +131,7 @@
                 <br>
                 <div class="row">
                     <div class="col">
-                        <label for="date">Seleziona Da Data:</label>
+                        <label for="date">A partire da:</label>
                         <select name="date" id="date" class="form-control">
                             <option value=" $valoreDefaultData "  $valoreDefaultData === date('Y-m-d') ? 'selected' : '' >Oggi</option>
                             @foreach ($date as $itemd)

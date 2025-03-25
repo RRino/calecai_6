@@ -31,7 +31,7 @@ class DateGenerator
             )
         ];
         $nextStartOfMonth = $today;
-        for ($i = 0; $i < count(self::$words); $i++) {
+        for ($i = 0; $i < count(self::$words) - 1; $i++) {
             $nextStartOfMonth = $nextStartOfMonth->addMonth()->startOfMonth();
             $monthsFromToday[] = new DatePair(
                 $nextStartOfMonth->toDateString(),

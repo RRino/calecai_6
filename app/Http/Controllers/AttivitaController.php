@@ -24,18 +24,9 @@ class AttivitaController extends Controller
          $categoria = $request->input('attivita');
          $anno                 = now()->year;
          $dataOggius = Carbon::now()->toDateString(); 
-       
-         if($data == 'dataOggi'){
-             // crea data oggi europea
-             $data = Carbon::createFromFormat("Y-m-d", $dataOggius)->format("d-m-Y");
-         }else{
-             $data = $data.$anno;// aggiunge alla data del mese recuperato dalla tabella tipo_data, l'anno
-         }
 
              $viewData             = [];
 
-             // converte data in formato usa
-            $data          = Carbon::createFromFormat("d-m-Y", $data)->format("Y-m-d");
        //  dd($data,$categoria);   
              // seleziona tipo_attivita 10 = tutti, $categoria = tipo_attivita
              if ($categoria == 'Tutti') {
