@@ -19,7 +19,7 @@ class AttivitaController extends Controller
 
      public function index(Request $request): \Illuminate\Contracts\View\View
      {
-      
+     
          $data = $request->input('date');
          $categoria = $request->input('attivita');
          $anno                 = now()->year;

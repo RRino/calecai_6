@@ -131,10 +131,7 @@
         <x-menu-bar-home>
             <div class="container-sm">
 
-                {{--  <li><a class="btn btn-success btn-sm" href="{{ url('/') }}">Dashboard</a></li> --}}
-
-                <li><a class="btn btn-primary btn-sm" href="{{ url('/attivita/index/' . $dataOggi . '/99') }}">Chiudi</a>
-                </li>
+                <button class="btn btn-primary" onclick="window.close();">Chiudi Pagina</button>
 
         </x-menu-bar-home>
 
