@@ -116,66 +116,6 @@
             </li>
         @endif
 
-        {{-- <form method="post" action=" url('/attivita/index') ">
-            @csrf
-            <div class="dropdown">
-                <div class="col">
-                    <label for="attivita">Seleziona un'attività:</label>
-                    <select name="attivita" id="attivita" class="form-control">
-                        <option value="10"  $valoreDefaultAttivita === 10 ? 'selected' : '' >Tutti</option>
-                        @foreach ($attivita as $itema)
-                            <option value=" $itema->tipo_attivita "> $itema->nome </option>
-                        @endforeach
-                    </select>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col">
-                        <label for="date">A partire da:</label>
-                        <select name="date" id="date" class="form-control">
-                            <option value=" $valoreDefaultData "  $valoreDefaultData === date('Y-m-d') ? 'selected' : '' >Oggi</option>
-                            @foreach ($date as $itemd)
-                                <option value=" $itemd->nome "> $itemd->descrizione </option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <br>
-            <div class="btrova">
-                <button type="submit" class="btn btn-primary invia">Visualizza</button>
-            </div>
-        </form> }}">
-            @csrf
-            <div class="dropdown">
-                <div class="col">
-                    <label for="attivita">Seleziona Attività:</label>
-                    <select name="attivita" id="attivita" class="form-control">
-                        <option value="10" {{ $valoreDefaultAttivita === 10 ? 'selected' : '' }}>Tutti</option>
-                        @foreach ($attivita as $itema)
-                            <option value="{{ $itema->tipo_attivita }}">{{ $itema->nome }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col">
-                        <label for="date">Seleziona Da Data:</label>
-                        <select name="date" id="date" class="form-control">
-                            <option value="{{ $valoreDefaultData }}" {{ $valoreDefaultData === date('Y-m-d') ? 'selected' : '' }}>Oggi</option>
-                            @foreach ($date as $itemd)
-                                <option value="{{ $itemd->nome }}">{{ $itemd->descrizione }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <br>
-            <div class="btrova">
-                <button type="submit" class="btn btn-primary invia">Visualizza</button>
-            </div>
-        </form> --}}
-
         <form id="autoSubmitForm" method="post" action="{{ url('/attivita/index') }}">
             @csrf
             <div class="dropdown">
