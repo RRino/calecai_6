@@ -202,8 +202,6 @@
     });
 </script>
 
-
-
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         // Controlla se l'azione è già stata eseguita
@@ -215,7 +213,6 @@
             if (attivitaLink) {
                 attivitaLink.click();
             }
-
             // Imposta il flag per evitare ulteriori esecuzioni
             sessionStorage.setItem("trovaDaDataExecuted", "true");
         }
