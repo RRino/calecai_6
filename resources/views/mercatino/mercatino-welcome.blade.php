@@ -89,9 +89,6 @@
 
 
                     <div class="row">
-                        @include("parziali.mercatino-main")
-                    </div>
-                    <div class="row">
                         @include("parziali.ciao")
                     </div>
                 </div>

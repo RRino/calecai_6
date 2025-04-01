@@ -139,11 +139,7 @@
                         <div class="tit-testo">Eventi</div><img class="ima" src="img/eventi.png" alt="Eventi cai"></a></li>
                 </div>
                 
-                <div class="grid-item">
-                    <li> <a class="btn  btn-sm" href="{{ url("/mercatino.mercatino-welcome") }}">
-                        <div class="tit-testo">MMERCATINO CAIBO</div><img class="ima" src="img/submarine.png"
-                        alt="Mercatino cai bo"></a></li>
-                </div>
+ 
 
             </div>
         </div>

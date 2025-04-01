@@ -70,11 +70,7 @@ Route::controller(ContentController::class)->group(function () {
     Route::get('disableArticolo/{id}', 'disableArticolo');
 });
 
-// richiama il mercatino dall'esterno caibo.it/calecai/public/mercatino.index
-Route::controller(MercatinoController::class)->group(function () {
-    Route::get('/mercatino.index', 'index');
 
-});
 
 // cancella iscrizione dall'esterno , emil spedita dopo registrazione
 Route::controller(IscrizioneController::class)->group(function () {

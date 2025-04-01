@@ -151,11 +151,7 @@
             </div>
 
 
-            {{-- <div class="grid-item">
-                    <li> <a class="btn  btn-sm" href="{{ url("/mercatino.index") }}">
-                        <div class="tit-testo">MMERCATINO CAIBO</div><img class="ima" src="img/submarine.png"
-                        alt="Mercatino cai bo"></a></li>
-                </div> --}}
+          
 
         </div>
     </div>

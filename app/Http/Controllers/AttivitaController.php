@@ -396,92 +396,81 @@ class AttivitaController extends Controller
 
         return view('attivita/programma')->with("viewData", $viewData);
     }
-
-
 }
 
 function attivita_convert()
 {
-    $attivita = Attivita::all();
+    $attivita = Attivita::where('published', 1)->orderBy('data_inizio', 'asc')->get();
     $tipovolantino = TipoVolantino::all();
     $tipoattivita = TipoAttivita::all();
     $tipoqualifica = TipoQualifica::all();
     $tipospecializzazione = TipoSpecializzazione::all();
     $tipotrasporto = TipoTrasporto::all();
     $tipodifficolta = TipoDifficolta::all();
-   
+
     AttivitaConv::truncate(); // Clear the table before populating it
-  
+
 
     foreach ($attivita as $data) {
         $attivitaConv = new AttivitaConv;
         $attivitaConv->id = $data->id;
 
-       if($data->socio == 0){
+        if ($data->socio == 0) {
             $attivitaConv->socio = 'Tutti';
-        }else{
+        } else {
             $attivitaConv->socio = 'Solo Soci';
         }
         $attivitaConv->tipo_attivita = $tipoattivita->find($data->tipo_attivita)->nome;
         $attivitaConv->titolo = $data->titolo;
         $attivitaConv->descrizione = $data->descrizione;
         $attivitaConv->note = $data->note;
-        $attivitaConv->tipo_volantino = $tipovolantino->find($data->tipo_volantino)->nome;
-
         $attivitaConv->numerominimo = $data->numerominimo;
         $attivitaConv->numeromassimo = $data->numeromassimo;
-        $attivitaConv->nome = $data->nome;
-        $attivitaConv->cognome = $data->cognome;
-        $attivitaConv->telefono = $data->telefono;
-        $attivitaConv->email = $data->email;
-        $attivitaConv->qualifica = $tipoqualifica->find($data->qualifica)->nome;;
-        $attivitaConv->specializzazione = $tipospecializzazione->find($data->tipo_specializzazione)->nome;
         $datainizio = DateTime::createFromFormat('Y-m-d', $data->data_inizio)->format('d-m-Y');
         $datafine = DateTime::createFromFormat('Y-m-d', $data->data_fine)->format('d-m-Y');
         $attivitaConv->data_inizio = $datainizio;
         $attivitaConv->data_fine = $datafine;
-
-        //dd($attivitaConv->data_inizio, $attivitaConv->data_fine);
-        $attivitaConv->inizio_iscrizioni = $data->inizio_iscrizioni;
-        $attivitaConv->fine_iscrizioni = $data->fine_iscrizioni;
-        $attivitaConv->luogoritrovo = $data->luogoritrovo;
-        $attivitaConv->oraritrovo = $data->oraritrovo;
-        $attivitaConv->tipologiatrasporto = $data->tipologiatrasporto;
-        $attivitaConv->difficolta = $data->difficolta;
+/*
+        if ($data->inizio_iscrizioni == null || $data->inizio_iscrizioni === false) {
+            $datainizioiscrizioni = null;
+        } else {
+            $datainizioiscrizioni = convert_data($data->inizio_iscrizioni);
+           
+        }
+            
+        if ($data->fine_iscrizioni === false) {
+            $datafineiscrizioni = null;
+        } else {
+            $datafineiscrizioni =  convert_data($data->fine_iscrizioni);
+        }
+            
+       // dd($data->inizio_iscrizioni, $data->fine_iscrizioni, $datainizioiscrizioni, $datafineiscrizioni);
+        $attivitaConv->inizio_iscrizioni = $datainizioiscrizioni;
+        $attivitaConv->fine_iscrizioni = $datafineiscrizioni;
+        */
+       // $attivitaConv->luogoritrovo = $data->luogoritrovo;
+       // $attivitaConv->oraritrovo = $data->oraritrovo;
+       // $attivitaConv->tipologiatrasporto = $tipotrasporto->find($data->tipologiatrasporto)->nome;
+        $attivitaConv->difficolta = $tipodifficolta->find($data->difficolta)->nome;
         $attivitaConv->lunghezza = $data->lunghezza;
         $attivitaConv->dislivello = $data->dislivello;
         $attivitaConv->durata = $data->durata;
         $attivitaConv->quotaminima = $data->quotaminima;
         $attivitaConv->quotamassima = $data->quotamassima;
-        $attivitaConv->a_spinta = $data->a_spinta;
-        $attivitaConv->portage = $data->portage;
-        $attivitaConv->image_file = $data->image_file;
-        $attivitaConv->pdf_file = $data->pdf_file;
-        $attivitaConv->link_volantino = $data->link_volantino;
-        $attivitaConv->email_user = $data->email_user;
-        $attivitaConv->presentazione = $data->presentazione;
-        $attivitaConv->data_presentazione = $data->data_presentazione;
-        $attivitaConv->contatti = $data->contatti;
-        $attivitaConv->altro = $data->altro;
-        $attivitaConv->altriorganizzatori = $data->altriorganizzatori;
-        $attivitaConv->altricosti = $data->altricosti;
+        $attivitaConv->image_file = 'https://calecai.caibo.it/calecai/public/storage/imgtrek/' . $data->image_file;
+       // $attivitaConv->pdf_file = 'https://calecai.caibo.it/calecai/public/show-pdf/' . $data->pdf_file;
+       // $attivitaConv->link_volantino = $data->link_volantino;
+        //$attivitaConv->presentazione = $data->presentazione;
         $attivitaConv->linkluogo = $data->linkluogo;
-        $attivitaConv->link_modulo_esterno = $data->link_modulo_esterno;
-        $attivitaConv->user_email = $data->user_email;
-        $attivitaConv->clic = $data->clic;
-        $attivitaConv->order = $data->order;
-        $attivitaConv->published = $data->published;
+        $attivitaConv->altro = 'https://calecai.caibo.it/calecai/public/attivita/singolo/'.$data->id;;
+      //  $attivitaConv->calendario = $data->calendario;
+      //  $attivitaConv->tipo_iscrizione = $data->tipo_iscrizione;
         $attivitaConv->created_at = $data->created_at;
         $attivitaConv->updated_at = $data->updated_at;
-    
-        $attivitaConv->published = 1;
-        $attivitaConv->calendario = $data->calendario;
-        $attivitaConv->tipo_iscrizione = $data->tipo_iscrizione;
-     
-       
         $attivitaConv->save();
-        dd($attivitaConv);
-    }
+
+
+        }
 }
 
 function import_images_from_web($url)
@@ -494,6 +483,12 @@ function import_images_from_web($url)
     if (Storage::put($imagePath, $imageContents)) {
         return null;
     }
+}
+
+function convert_data($data)
+{
+    $data = substr($data, 8, 2) . '-' . substr($data, 5, 2) . '-' . substr($data, 0, 4);
+    return $data;
 }
 
 function import_pdf_from_web($url)
