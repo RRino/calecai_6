@@ -48,12 +48,9 @@
         }
 
         .menu-bar {
-            margin-top: 5px;
             margin-bottom: 6px;
             padding: 3px;
-            border: solid 1px #ccc;
-            border-radius: 3px;
-            background: #cccccc;
+            background: #00366B;
         }
 
         .dada {
@@ -98,6 +95,9 @@
         .invia{
             color:yellow
         }
+        form#autoSubmitForm {
+    padding-left: 20px;
+}
     </style>
     
 </head>
@@ -133,31 +133,28 @@
             </li>
         @endif
 
-        <form method="post" action="{{ url('/attivita/index') }}">
+        <form id="autoSubmitForm" method="post" action="{{ url('/attivita/index') }}" class="mt-3">
             @csrf
-            <div class="dropdown">
-                <div class="col">
-                    <label for="attivita">Seleziona Attività:</label>
-                    <select name="attivita" id="attivita" class="form-control">
+            <div class="row">
+                <div class="col-md-12 d-flex align-items-center">
+                    <label for="attivita" class="me-2" style="width: max-content;color:white">Seleziona Attività:</label>
+                    <select name="attivita" id="attivita" class="form-select me-3" style="max-width: 150px;">
+                        <option value="Tutti" selected>Tutti</option>
                         @foreach ($attivita as $itema)
                             <option value="{{ $itema->tipo_attivita }}">{{ $itema->nome }}</option>
                         @endforeach
                     </select>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <label for="date">Seleziona Data:</label>
-                        <select name="date" id="date" class="form-control">
-                            @foreach ($date as $itemd)
-                                <option value="{{ $itemd->nome }}">{{ $itemd->descrizione }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    <label for="date" class="me-2" style="width: max-content;color:white">Seleziona Da Data:</label>
+                    <select name="date" id="date" class="form-select" style="max-width: 100px;">
+                        <option value="dataOggi" selected>Oggi</option>
+                        @foreach ($date as $itemd)
+                            <option value="{{ $itemd->nome }}">{{ $itemd->descrizione }}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
-            <br>
-            <div class="btrova">
-                <button type="submit" class="btn btn-primary">Visualizza</button>
+            <div class="mt-3">
+                <button type="submit" class="btn btn-primary invia">Visualizza</button>
             </div>
         </form>
 

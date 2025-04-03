@@ -136,7 +136,7 @@
 
 
 
-    <div class="container-fluid">
+    <div class="container-fluid_x welcome">
         <footer class="fot">
             <div class="log_in">
                 @if (Route::has('login'))

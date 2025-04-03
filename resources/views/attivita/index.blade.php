@@ -188,7 +188,7 @@ $attivita = $viewData['attivita'];
 
     <div id="main">
 
-        <div class="container-fluid">
+        <div class="container-fluid_x index">
 
             <x-menu-bar>
 

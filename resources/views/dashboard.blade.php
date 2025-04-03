@@ -49,6 +49,7 @@
     .menu-bar {
 
         border: none !important;
+        background: #00366B;
 
     }
 
