@@ -9,11 +9,10 @@
     }
 
     .menu-bar {
-        margin-top: 5px;
+       
         margin-bottom: 6px;
         padding: 3px;
-        border: solid 1px #ccc;
-        border-radius: 3px;
+      
 
     }
 </style>

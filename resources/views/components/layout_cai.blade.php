@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <div class="container-fluid">
+    <div class="container-fluid_x layout_cai">
         {{ $slot }}
     </div>
 </body>

@@ -63,7 +63,7 @@
     {{ session("success") }}
 </div>
 @endif
-<div class="container-fluid">
+<div class="container-fluid dashboard">
 
     <div id="maih3">
 

@@ -62,7 +62,5 @@ class FormDati extends Seeder
         DB::table('tipo_dates')->insert(['id' => 10, 'tipo_date' => 10, 'nome' => '01-10-', 'descrizione' => 'Ottobre']);
         DB::table('tipo_dates')->insert(['id' => 11, 'tipo_date' => 11, 'nome' => '01-11-', 'descrizione' => 'Novembre']);
         DB::table('tipo_dates')->insert(['id' => 12, 'tipo_date' => 12, 'nome' => '01-12-', 'descrizione' => 'Dicembre']);
-        DB::table('tipo_dates')->insert(['id' => 13, 'tipo_date' => 13, 'nome' => 'dataDomani', 'descrizione' => 'Data di domani']);
-        DB::table('tipo_dates')->insert(['id' => 14, 'tipo_date' => 14, 'nome' => 'anno+1', 'descrizione' => 'Tutton l\'anno prossimo']);
-    }
+       }
 }
