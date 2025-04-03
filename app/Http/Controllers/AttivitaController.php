@@ -28,7 +28,9 @@ class AttivitaController extends Controller
 
     public function index(Request $request): \Illuminate\Contracts\View\View
     {
+        /** Richiama la funzione al caricamento di view/attivita/index.blade.php */
         attivita_convert();
+
         $data = $request->input('date');
         $categoria = $request->input('attivita');
         $anno = now()->year;
@@ -401,6 +403,7 @@ class AttivitaController extends Controller
 function attivita_convert()
 {
     $attivita = Attivita::where('published', 1)->orderBy('data_inizio', 'asc')->get();
+    /** Preparazione di array contenete i dati delle tabelle tipo_xxxxx */
     $tipovolantino = TipoVolantino::all();
     $tipoattivita = TipoAttivita::all();
     $tipoqualifica = TipoQualifica::all();
@@ -408,13 +411,13 @@ function attivita_convert()
     $tipotrasporto = TipoTrasporto::all();
     $tipodifficolta = TipoDifficolta::all();
 
+     /** Cancella contenuto tabella convertita nei dati per worpress */
     AttivitaConv::truncate(); // Clear the table before populating it
-
 
     foreach ($attivita as $data) {
         $attivitaConv = new AttivitaConv;
         $attivitaConv->id = $data->id;
-
+       /** converte volore di socio si o no nel valore usato su wordpress */
         if ($data->socio == 0) {
             $attivitaConv->socio = 'Tutti';
         } else {
@@ -430,27 +433,7 @@ function attivita_convert()
         $datafine = DateTime::createFromFormat('Y-m-d', $data->data_fine)->format('d-m-Y');
         $attivitaConv->data_inizio = $datainizio;
         $attivitaConv->data_fine = $datafine;
-/*
-        if ($data->inizio_iscrizioni == null || $data->inizio_iscrizioni === false) {
-            $datainizioiscrizioni = null;
-        } else {
-            $datainizioiscrizioni = convert_data($data->inizio_iscrizioni);
-           
-        }
-            
-        if ($data->fine_iscrizioni === false) {
-            $datafineiscrizioni = null;
-        } else {
-            $datafineiscrizioni =  convert_data($data->fine_iscrizioni);
-        }
-            
-       // dd($data->inizio_iscrizioni, $data->fine_iscrizioni, $datainizioiscrizioni, $datafineiscrizioni);
-        $attivitaConv->inizio_iscrizioni = $datainizioiscrizioni;
-        $attivitaConv->fine_iscrizioni = $datafineiscrizioni;
-        */
-       // $attivitaConv->luogoritrovo = $data->luogoritrovo;
-       // $attivitaConv->oraritrovo = $data->oraritrovo;
-       // $attivitaConv->tipologiatrasporto = $tipotrasporto->find($data->tipologiatrasporto)->nome;
+        /** Trova il nome della difficolta in base al valore nella colonna 'difficolta'*/ 
         $attivitaConv->difficolta = $tipodifficolta->find($data->difficolta)->nome;
         $attivitaConv->lunghezza = $data->lunghezza;
         $attivitaConv->dislivello = $data->dislivello;
@@ -458,12 +441,9 @@ function attivita_convert()
         $attivitaConv->quotaminima = $data->quotaminima;
         $attivitaConv->quotamassima = $data->quotamassima;
         $attivitaConv->image_file = 'https://calecai.caibo.it/calecai/public/storage/imgtrek/' . $data->image_file;
-       // $attivitaConv->pdf_file = 'https://calecai.caibo.it/calecai/public/show-pdf/' . $data->pdf_file;
-       // $attivitaConv->link_volantino = $data->link_volantino;
-        //$attivitaConv->presentazione = $data->presentazione;
         $attivitaConv->linkluogo = $data->linkluogo;
+        /** Crea il link per il singolo su Laravel */
         $attivitaConv->altro = 'https://calecai.caibo.it/calecai/public/attivita/singolo/'.$data->id;;
-      //  $attivitaConv->calendario = $data->calendario;
       //  $attivitaConv->tipo_iscrizione = $data->tipo_iscrizione;
         $attivitaConv->created_at = $data->created_at;
         $attivitaConv->updated_at = $data->updated_at;
