@@ -42,7 +42,7 @@
 {{-- <img id="myImage" src="{{ asset("img/Aquila2.png") }}" style="position: absolute; top: -110px; left: 25px;width:140px;"> --}}
 
 
-<div class="x_container-fluid">
+<div class="x_container-fluid logocaianim">
     <header class="hde">
 
         <div class="container_logo barb">

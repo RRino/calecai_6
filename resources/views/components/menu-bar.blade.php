@@ -48,8 +48,12 @@
         }
 
         .menu-bar {
+            margin-top: 5px;
+            margin-bottom: 6px;
             padding: 3px;
-    
+            border: solid 1px #ccc;
+            border-radius: 3px;
+            background: #cccccc;
         }
 
         .dada {
@@ -64,16 +68,38 @@
         }
 
 
-.invia{
-    margin-left:10px;
-    margin-top:5px;
-}
+
+
+
         .dropdown {
             position: relative;
             display: inline-block;
             margin-left: 10px;
         }
+
+
+
+        select#attivita,
+        select#date {
+            appearance: none;
+            /* Rimuove lo stile predefinito */
+            -webkit-appearance: none;
+            /* Per browser WebKit */
+            -moz-appearance: none;
+            /* Per Firefox */
+            background: #00366B url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23fff' d='M2 0L0 2h4z'/%3E%3C/svg%3E") no-repeat right 10px center;
+            background-size: 10px;
+            color: #f7df08;
+            padding: 5px;
+            font-weight: 700;
+            border: none;
+        }
+
+        .invia{
+            color:yellow
+        }
     </style>
+    
 </head>
 @php
     use Carbon\Carbon;
@@ -107,29 +133,31 @@
             </li>
         @endif
 
-
-        <form id="autoSubmitForm" method="post" action="{{ url('/attivita/index') }}">
+        <form method="post" action="{{ url('/attivita/index') }}">
             @csrf
-                        <div class="row">
-                <div class="col-md-12 d-flex align-items-center">
-                    <label for="attivita" class="me-2" style="width: max-content;">Seleziona Attività:</label>
-                    <select name="attivita" id="attivita" class="form-select me-3" style="max-width: 200px;">
-                        <option value="Tutti" selected>Tutti</option>
+            <div class="dropdown">
+                <div class="col">
+                    <label for="attivita">Seleziona Attività:</label>
+                    <select name="attivita" id="attivita" class="form-control">
                         @foreach ($attivita as $itema)
                             <option value="{{ $itema->tipo_attivita }}">{{ $itema->nome }}</option>
                         @endforeach
                     </select>
-                    <label for="date" class="me-2" style="width: max-content;">Seleziona Da Data:</label>
-                    <select name="date" id="date" class="form-select" style="max-width: 200px;">
-                        <option value="dataOggi" selected>Oggi</option>
-                        @foreach ($date as $itemd)
-                            <option value="{{ $itemd->nome }}">{{ $itemd->descrizione }}</option>
-                        @endforeach
-                    </select>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="date">Seleziona Data:</label>
+                        <select name="date" id="date" class="form-control">
+                            @foreach ($date as $itemd)
+                                <option value="{{ $itemd->nome }}">{{ $itemd->descrizione }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
             </div>
-            <div class="mt-3">
-                <button type="submit" class="btn btn-primary invia">Visualizza</button>
+            <br>
+            <div class="btrova">
+                <button type="submit" class="btn btn-primary">Visualizza</button>
             </div>
         </form>
 
@@ -138,6 +166,7 @@
                 <div class="dropdown">
                     <button class="dropdown-toggle" id="dropdownMenuButton">Menu Amministrazione</button>
                     <ul class="dropdown-menu" id="dropdownMenu">
+                        
                     <li><a class="dropdown-item" href="{{ url('/get_from_dbcai') }}">Carica attività<br>caibo.it da
                             data di oggi</a>
                     </li> 
@@ -192,7 +221,7 @@
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         // Controlla se l'azione è già stata eseguita
         const alreadyExecuted = sessionStorage.getItem("trovaDaDataExecuted");
 
@@ -207,15 +236,4 @@
             sessionStorage.setItem("trovaDaDataExecuted", "true");
         }
     });
-</script>
-
-<script>
-    // Quando la pagina è completamente caricata
-    window.onload = function() {
-        // Controlla se il form è già stato inviato
-        if (!sessionStorage.getItem('formSent')) {
-            document.getElementById('autoSubmitForm').submit(); // Invia il form
-            sessionStorage.setItem('formSent', true); // Imposta il flag per evitare il loop
-        }
-    };
 </script>
