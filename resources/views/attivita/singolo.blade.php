@@ -54,7 +54,7 @@
         border: solid 1px #cccccc;
         border-radius: 5px;
         padding: 10px;
-        box-shadow: 2px 2px rgb(8, 7, 14);
+
     }
 </style>
 
@@ -73,7 +73,7 @@
         border: solid 1px #cccccc;
         padding: 15px;
         border-radius: 5px;
-        box-shadow: 0px 0px 3px 3px rgb(203, 203, 206);
+     
     }
 
     img#preview {
@@ -177,7 +177,8 @@
 
                                 <div class="item">
                                     <label class="lab">Iscrizione</label><br>
-                                    @if (isset($attivita->tipo_iscrizione) && $attivita->tipo_iscrizione != 4)
+                                    {{ $attivita->tipo_iscrizione }}
+                                    @if (isset($attivita->tipo_iscrizione) && $attivita->tipo_iscrizione != 4 && $attivita->tipo_iscrizione != 2 && $attivita->tipo_iscrizione != null)
                                         <a class="btn btn-primary btn-sm" class="dropdown-item"
                                             href="{{ url('/iscrizione/tipo' . '/' . $attivita->tipo_iscrizione . '/' . $attivita->id) }}">
                                             {{ 'Iscrizione' }}
@@ -185,7 +186,7 @@
                                             {{-- <span class="rif">{{ $tipoiscrizione->firstWhere('id', $attivita->tipo_iscrizione)->tipo_iscrizione ?? '' }}</span> --}}
                                         </a>
                                     @else
-                                        {{ 'MANCA TIPO DI ISCRIZIONE' }}
+                                        {{ 'Nessuna ISCRIZIONE' }}
                                     @endif
                                     <br>
                                 </div>
