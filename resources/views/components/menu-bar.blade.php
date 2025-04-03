@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="it">
 
@@ -47,12 +48,8 @@
         }
 
         .menu-bar {
-            margin-top: 5px;
-            margin-bottom: 6px;
             padding: 3px;
-            border: solid 1px #ccc;
-            border-radius: 3px;
-            background: #cccccc;
+    
         }
 
         .dada {
@@ -66,13 +63,7 @@
 
         }
 
-#date{
-    background: #ccb;
-}
 
-#attivita{
-    background: #ccb;
-}
 .invia{
     margin-left:10px;
     margin-top:5px;
@@ -93,7 +84,7 @@
     $dataOggi = Carbon::createFromFormat('Y-m-d', $dataOggius)->format('d-m-Y');
     $data = null;
     $attivita = TipoAttivita::where('published', 1)->get();
-    $date = App\Helpers\DateGenerator::monthsFromToday();
+    $date = TipoDate::where('published', 1)->get();
 
     $itemSelezionatoData = null; // Valore di default
     $itemSelezionatoAttivita = null; // Valore di default
@@ -116,32 +107,28 @@
             </li>
         @endif
 
+
         <form id="autoSubmitForm" method="post" action="{{ url('/attivita/index') }}">
             @csrf
-            <div class="dropdown">
-                <div class="col">
-                    <label for="attivita">Seleziona Attività:</label>
-                    <select name="attivita" id="attivita" class="form-control">
+                        <div class="row">
+                <div class="col-md-12 d-flex align-items-center">
+                    <label for="attivita" class="me-2" style="width: max-content;">Seleziona Attività:</label>
+                    <select name="attivita" id="attivita" class="form-select me-3" style="max-width: 200px;">
                         <option value="Tutti" selected>Tutti</option>
                         @foreach ($attivita as $itema)
                             <option value="{{ $itema->tipo_attivita }}">{{ $itema->nome }}</option>
                         @endforeach
                     </select>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col">
-                        <label for="date">Seleziona Da Data:</label>
-                        <select name="date" id="date" class="form-control">
-                            <option value="dataOggi" selected>DataOggi</option>
-                            @foreach ($date as $itemd)
-                                <option value="{{ $itemd->nome }}">{{ $itemd->descrizione }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    <label for="date" class="me-2" style="width: max-content;">Seleziona Da Data:</label>
+                    <select name="date" id="date" class="form-select" style="max-width: 200px;">
+                        <option value="dataOggi" selected>Oggi</option>
+                        @foreach ($date as $itemd)
+                            <option value="{{ $itemd->nome }}">{{ $itemd->descrizione }}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
-            <div class="btrova">
+            <div class="mt-3">
                 <button type="submit" class="btn btn-primary invia">Visualizza</button>
             </div>
         </form>
@@ -202,6 +189,8 @@
     });
 </script>
 
+
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         // Controlla se l'azione è già stata eseguita
@@ -213,6 +202,7 @@
             if (attivitaLink) {
                 attivitaLink.click();
             }
+
             // Imposta il flag per evitare ulteriori esecuzioni
             sessionStorage.setItem("trovaDaDataExecuted", "true");
         }
