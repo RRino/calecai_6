@@ -399,7 +399,11 @@ class AttivitaController extends Controller
         return view('attivita/programma')->with("viewData", $viewData);
     }
 }
-
+/**
+ * Funzione per convertire i dati delle attivita in un formato compatibile con WordPress
+ * richiamata da index()
+ * @return void
+ */
 function attivita_convert()
 {
     $attivita = Attivita::where('published', 1)->orderBy('data_inizio', 'asc')->get();
