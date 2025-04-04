@@ -9,6 +9,23 @@ use Illuminate\Http\JsonResponse;
 class FullCalenderController extends Controller
 {
     /**
+     * Show the application calendar.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function show($id)
+    {
+        dd($id);    
+
+        
+    }
+public function showCalendar()
+{
+    $events = Event::all();
+
+    return view('fullcalendar', compact('events'));
+}
+    /**
      * Write code on Method
      *
      * @return response()
@@ -21,7 +38,7 @@ class FullCalenderController extends Controller
              $data = Event::whereDate('start', '>=', $request->start)
                        ->whereDate('end',   '<=', $request->end)
                        ->get(['id', 'title', 'start', 'end']);
-  
+                       dd($data);
              return response()->json($data);
         }
   
