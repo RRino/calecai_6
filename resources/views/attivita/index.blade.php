@@ -210,7 +210,7 @@
                         </form>
                     </div>
                     <div class="col-sm">
-                        <li class="l"><a class="btn btn-link btn-sm" href="{{ url('/fullcalender/showCalendar') }}">Calendario</a></li>
+                        <li style="margin-top:10px;"><a class="btn btn-primary btn-sm" href="{{ url('/fullcalender/showCalendar') }}">Calendario</a></li>
                     </div>
                 </div>
             </div>
