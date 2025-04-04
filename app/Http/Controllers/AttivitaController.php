@@ -2,17 +2,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attivita;
-use App\Models\AttivitaConv;
-use App\Models\TipoAttivita;
-use App\Models\TipoDifficolta;
-use App\Models\TipoQualifica;
-use App\Models\TipoSpecializzazione;
-use App\Models\TipoTrasporto;
-use App\Models\TipoVolantino;
-//use App\Models\TipoCalendario;
+use App\Models\User;
 use Carbon\Carbon;
-use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -24,31 +17,25 @@ class AttivitaController extends Controller
      * @return void
      */
 
-    public function index(Request $request): \Illuminate\Contracts\View\View
-    {
-        /** Richiama la funzione al caricamento di view/attivita/index.blade.php */
-        attivita_convert();
+     public function index(Request $request): \Illuminate\Contracts\View\View
+     {
+         $data = $request->input('date');
+         $categoria = $request->input('attivita');
+         $anno                 = now()->year;
+         $dataOggius = Carbon::now()->toDateString(); 
+         if($data == 'dataOggi'){
+             // crea data oggi europea
+             $data = Carbon::createFromFormat("Y-m-d", $dataOggius)->format("d-m-Y");
+         }else{
+             $data = $data.$anno;// aggiunge alla data del mese recuperato dalla tabella tipo_data, l'anno
+         }
 
-        $data       = $request->input('date');
-        $categoria  = $request->input('attivita');
-        $anno       = now()->year;
-        $dataOggius = Carbon::now()->toDateString();
-
-        if ($data == 'dataOggi') {
-            // crea data oggi europea
-            $data = Carbon::createFromFormat("Y-m-d", $dataOggius)->format("d-m-Y");
-        } else {
-            $data = $data . $anno; // aggiunge alla data del mese recuperato dalla tabella tipo_data, l'anno
-        }
-
-        $viewData = [];
-
-        // converte data in formato usa
-        $data = Carbon::createFromFormat("d-m-Y", $data)->format("Y-m-d");
-        //  dd($data,$categoria);
-        // seleziona tipo_attivita 10 = tutti, $categoria = tipo_attivita
-        if ($categoria == 'Tutti') {
-            $viewData['attivita'] = Attivita::where('published', 1)
+             $viewData             = [];
+             // converte data in formato usa
+             $data          = Carbon::createFromFormat("d-m-Y", $data)->format("Y-m-d");
+             // seleziona tipo_attivita 10 = tutti, $categoria = tipo_attivita
+             if ($categoria == 10) {
+                $viewData['attivita'] = Attivita::where('published', 1)
                 ->where(function ($query) use ($data) {
                     $query->where(function ($query) use ($data) {
                         $query->where('calendario', 0)
@@ -60,25 +47,204 @@ class AttivitaController extends Controller
                     });
                 })
                 ->get();
-        } else {
-            $viewData['attivita'] = Attivita::where('published', 1)
+             } else {
+                $viewData['attivita'] = Attivita::where('published', 1)
                 ->where('tipo_attivita', $categoria)
                 ->where(function ($query) use ($data) {
                     $query->where(function ($query) use ($data) {
-
                         $query->where('calendario', 0)
                             ->whereDate('data_inizio', '>=', $data);
                     })->orWhere(function ($query) use ($data) {
-
                         $query->where('calendario', '>=', 1)
                             ->whereDate('data_fine', '>=', $data);
                     });
                 })
                 ->get();
-            // dd($viewData);
+    // dd($viewData);
+            }
+ 
+             return view('attivita.index')->with("viewData", $viewData);
+         
+     }
+     
+
+
+    public function index_x(Request $request, $dataOggi = null, $categoria): \Illuminate\Contracts\View\View
+    {
+        $dataOggi             = $dataOggi ?? now()->format('Y-m-d'); // Usa la data di oggi se non è fornita
+        $viewData             = [];
+        $dataOggius           = Carbon::createFromFormat("d-m-Y", $dataOggi)->format("Y-m-d");
+        $viewData['dataoggi'] = $dataOggi;
+        $user                 = Auth::user();
+        $anno                 = now()->year;
+        $anno_attivita        = Carbon::parse($dataOggius)->year;
+        //$user = User::find(1);
+        // $rol = $user->role;
+        // Cache::flush();
+
+        // seleziona tipo_attivita 99 = tutti, $categoria = tipo_attivita
+        if ($categoria == 99) {
+            // se utente non login o se login come utente
+            if ($user == null || $user == 'utente') {
+                $viewData['attivita'] = Attivita::where('published', 1)
+                    ->where(function ($query) use ($dataOggius) {
+                        $query->where(function ($query) use ($dataOggius) {
+                            $query->where('calendario', 0)
+                                ->whereDate('data_inizio', '>=', $dataOggius);
+                        })->orWhere(function ($query) use ($dataOggius) {
+                            //$query->where('tipo_attivita', 2)// calendario
+                            $query->where('calendario', '>=', 1)
+                                ->whereDate('data_fine', '>=', $dataOggius);
+                        });
+                    })
+                    ->get();
+            } else {
+                if ($user->is_admin == 1 || $user->role == 'editor' || $user->role == 'accompagnatore') {
+                    $viewData['attivita'] = Attivita::where('published', 1)
+                        ->where(function ($query) use ($dataOggius) {
+                            $query->where(function ($query) use ($dataOggius) {
+                                $query->where('calendario', 0)
+                                    ->whereDate('data_inizio', '>=', $dataOggius);
+                            })->orWhere(function ($query) use ($dataOggius) {
+                                //$query->where('tipo_attivita', 2)// calendario
+                                $query->where('calendario', '>=', 1)
+                                    ->whereDate('data_fine', '>=', $dataOggius);
+                            });
+                        })
+                        ->get();
+                }
+            }
+
+// tutte le attivita
+        } elseif ($categoria != 0) {
+            // se categoria scelta da home trekking, corsi, ecc..
+            if ($user == null || $user == 'utente') {
+                $viewData['attivita'] = Attivita::where('published', 1)
+                    ->where('tipo_attivita', $categoria)
+                    ->where(function ($query) use ($dataOggius) {
+                        // usa data_inizio per filtrare le attivita da visualizzare
+                        $query->where(function ($query) use ($dataOggius) {
+                            $query->where('calendario', 0)
+                                ->whereDate('data_inizio', '>=', $dataOggius);
+                        })->orWhere(function ($query) use ($dataOggius) {
+                            //$query->where('tipo_attivita', 2)
+                            // usa data_fine se il campo 'calendario' contiene 1
+                            $query->where('calendario', '>=', 1)
+                                ->whereDate('data_fine', '>=', $dataOggius);
+                        });
+                    })
+                    ->get();
+
+            } else {
+                // se amminstratore ecc..
+                if ($user->is_admin == 1 || $user->role == 'editor' || $user->role == 'accompagnatore') {
+                    $viewData['attivita'] = Attivita::where('published', 1)
+                        ->where('tipo_attivita', $categoria)
+                        ->where(function ($query) use ($dataOggius) {
+                            // usa data_inizio per filtrare le attivita da visualizzare
+                            $query->where(function ($query) use ($dataOggius) {
+                                $query->where('calendario', 0)
+                                    ->whereDate('data_inizio', '>=', $dataOggius);
+                            })->orWhere(function ($query) use ($dataOggius) {
+                                //$query->where('tipo_attivita', 2)
+                                // usa data_fine se il campo 'calendario' contiene 1
+                                $query->where('calendario', '>=', 1)
+                                    ->whereDate('data_fine', '>=', $dataOggius);
+                            });
+                        })
+                        ->get();
+                }
+            }
+        } else {
+            // visualizza solo i calendari
+            if ($user == null || $user == 'utente') {
+                $viewData['attivita'] = Attivita::where('published', 1)
+                    ->where(function ($query) {
+                        // calendari tipo 1 e 2
+                        $query->where('calendario', '>=', 1);
+
+                    })
+                // solo se il calendario finisce nell'anno attuale
+                    ->where(function ($query) use ($dataOggius) {
+                        $query->whereYear('data_fine', now()->year);
+                    })
+                // ->whereRaw('LENGTH(titolo) > 2')
+                // ->whereRaw('LENGTH(descrizione) > 3')
+                    ->get();
+            } else {
+                // se amminstratore ecc..
+                $viewData['attivita'] = Attivita::where('published', 1)
+                    ->where('tipo_attivita', $categoria)
+                    ->get();
+            }
         }
 
         return view('attivita.index')->with("viewData", $viewData);
+    }
+
+
+    public function index_xx(Request $request): \Illuminate\Contracts\View\View
+    {
+      
+        $data = $request->input('date');
+        $categoria = $request->input('attivita');
+        $anno                 = now()->year;
+        
+        if($data == 'dataOggi'){
+            $dataOggius = Carbon::now()->toDateString(); 
+            // crea data oggi europea
+            //$dataOggius = Carbon::createFromFormat("Y-m-d", $dataOggius)->format("d-m-Y");
+        }else{
+            $dataOggi = "{$data}{$anno}"; // aggiunge alla data del mese recuperato dalla tabella tipo_data, l'anno
+        }
+       
+
+
+           // $dataOggi             = $dataOggi ?? now()->format('Y-m-d'); // Usa la data di oggi se non è fornita
+            $viewData             = [];
+            $dataOggius           = Carbon::createFromFormat("d-m-Y", $dataOggi)->format("Y-m-d");
+            $viewData['dataoggi'] = $dataOggi;
+
+            // seleziona tipo_attivita 99 = tutti, $categoria = tipo_attivita
+            if ($categoria == 10) {
+                // se utente non login o se login come utente
+                $viewData['attivita'] = Attivita::where('published', 1)
+                    ->where(function ($query) use ($dataOggius) {
+                        $query->where(function ($query) use ($dataOggius) {
+                            $query->where('calendario', 0)
+                                ->whereDate('data_inizio', '>=', $dataOggius);
+                        })->orWhere(function ($query) use ($dataOggius) {
+                            //$query->where('tipo_attivita', 2)// calendario
+                            $query->where('calendario', '>=', 1)
+                                ->whereDate('data_fine', '>=', $dataOggius);
+                        })->orWhere(function ($query) use ($dataOggius) {
+                            $query->where('tipo_attivita', 0)
+                                ->whereDate('data_fine', '>=', $dataOggius);
+                        });
+                    })
+                    ->get();
+            } else {
+                $viewData['attivita'] = Attivita::where('published', 1)
+                    ->where('tipo_attivita', $categoria)
+                    ->where(function ($query) use ($dataOggius) {
+                        // usa data_inizio per filtrare le attivita da visualizzare
+                        $query->where(function ($query) use ($dataOggius) {
+                            $query->where('calendario', 0)
+                                ->whereDate('data_inizio', '>=', $dataOggius);
+                        })->orWhere(function ($query) use ($dataOggius) {
+                            // usa data_fine se il campo 'calendario' contiene 1 utilizza data fine per filtrare le attivita da visualizzare
+                            $query->where('calendario', '>=', 1)
+                                ->whereDate('data_fine', '>=', $dataOggius);
+                        })->orWhere(function ($query) use ($dataOggius) {
+                            $query->where('tipo_attivita', 0)
+                                ->whereDate('data_fine', '>=', $dataOggius);
+                        });
+                    })
+                    ->get();
+            }
+
+            return view('attivita.index')->with("viewData", $viewData);
+
     }
 
     public function singolo($id)
@@ -134,7 +300,7 @@ class AttivitaController extends Controller
     }
 
     /**
-     * Aggiorna
+     * Aggiorna 
      */
 
     public function save_edit(Request $request, $id)
@@ -358,57 +524,8 @@ class AttivitaController extends Controller
         //return redirect('/');
     }
 
-    public function get_from_dbcai()
-    {
-        // Connessione al database esterno
-        //$externalDbConnection = DB::connection('mysql_external'); // Recupero dei dati dalla tabella 'eventos' del database esterno
-        // $viewData             = $externalDbConnection->table('eventos')->where('id', '>=', 856)->get();
-        $viewData = DB::table('rino4_evetrek_eventos')->where('id', '>=', 855)->get();
 
-        foreach ($viewData as $data) {
-            if (Carbon::parse($data->znminizio)->lt(now())) {
-                continue;
-            }
-            if (Attivita::where('titolo', $data->title)->exists()) {
-                continue;
-            }
-            $attivita         = new Attivita;
-            $attivita->titolo = $data->title;
-            if ($data->descrizione != null) {
-                $attivita->descrizione = $data->descrizione;
-            } else {
-                $attivita->descrizione = " ";
-            }
-            $attivita->data_inizio    = $data->znminizio;
-            $attivita->data_fine      = $data->datafineus;
-            $attivita->tipo_attivita  = $data->catidev;
-            $attivita->tipo_volantino = 0;
-            if ($data->tipo_iscriz != null) {
-                $attivita->tipo_iscrizione = $data->tipo_iscriz;
-            } else {
-                $attivita->tipo_iscrizione = 1;
-            }
-            $attivita->image_file = basename($data->imagebox);
-            $attivita->pdf_file   = basename($data->banner);
-
-            $attivita->published = 0;
-            $attivita->save();
-
-            import_images_from_web($data->imagebox);
-            import_pdf_from_web($data->banner);
-        }
-
-        return redirect()->back()->with('success', 'Dati importati con successo');
-    }
-    public function get_programma($id)
-    {
-        $viewData             = [];
-        $viewData['attivita'] = Attivita::find($id);
-
-        return view('attivita/programma')->with("viewData", $viewData);
-    }
-}
-/**
+    /**
  * Funzione per convertire i dati delle attivita in un formato compatibile con WordPress
  * richiamata da index()
  * @return void
@@ -478,6 +595,56 @@ function attivita_convert()
     }
 }
 
+    public function get_from_dbcai()
+    {
+        // Connessione al database esterno
+        //$externalDbConnection = DB::connection('mysql_external'); // Recupero dei dati dalla tabella 'eventos' del database esterno
+        // $viewData             = $externalDbConnection->table('eventos')->where('id', '>=', 856)->get();
+        $viewData = DB::table('rino4_evetrek_eventos')->where('id', '>=', 855)->get();
+
+        foreach ($viewData as $data) {
+            if (Carbon::parse($data->znminizio)->lt(now())) {
+                continue;
+            }
+            if (Attivita::where('titolo', $data->title)->exists()) {
+                continue;
+            }
+            $attivita         = new Attivita;
+            $attivita->titolo = $data->title;
+            if ($data->descrizione != null) {
+                $attivita->descrizione = $data->descrizione;
+            } else {
+                $attivita->descrizione = " ";
+            }
+            $attivita->data_inizio    = $data->znminizio;
+            $attivita->data_fine      = $data->datafineus;
+            $attivita->tipo_attivita  = $data->catidev;
+            $attivita->tipo_volantino = 0;
+            if ($data->tipo_iscriz != null) {
+                $attivita->tipo_iscrizione = $data->tipo_iscriz;
+            } else {
+                $attivita->tipo_iscrizione = 1;
+            }
+            $attivita->image_file = basename($data->imagebox);
+            $attivita->pdf_file   = basename($data->banner);
+
+            $attivita->published = 0;
+            $attivita->save();
+
+            import_images_from_web($data->imagebox);
+            import_pdf_from_web($data->banner);
+        }
+
+        return redirect()->back()->with('success', 'Dati importati con successo');
+    }
+    public function get_programma($id)
+    {
+        $viewData             = [];
+        $viewData['attivita'] = Attivita::find($id);
+
+        return view('attivita/programma')->with("viewData", $viewData);
+    }
+}
 function import_images_from_web($url)
 {
     $url           = 'https://caibo.it/' . $url;
