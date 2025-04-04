@@ -13,6 +13,13 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GoogleDriveController;
 use App\Http\Controllers\ImageController;
 
+use App\Http\Controllers\FullCalenderController;
+  
+Route::controller(FullCalenderController::class)->group(function(){
+    Route::get('fullcalender', 'index');
+    Route::post('fullcalenderAjax', 'ajax');
+});
+
 Route::get('/', function () {
     return view('custom-welcome'); // Cambia 'welcome' con il nome della tua vista personalizzata
 });
