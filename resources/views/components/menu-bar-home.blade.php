@@ -33,10 +33,10 @@
                 @if (app()->environment("local"))
                     <li class="l"><a class="btn btn-primary btn-sm"
                             {{-- href=" url("http://127.0.0.1:8000/") ">Home attività</a></li> }}">Home attività</a></li> --}}
-                            href="{{ url('http://localhost/testwp/') }}">Home.</a></li>
+                            href="{{ url('http://localhost/testwp/') }}">Home</a></li>
                 @else
                     <li class="l"><a class="btn btn-primary btn-sm"
-                            href="{{ url("https://calecai.caibo.it/calecai/public") }}">Home.</a></li>
+                            href="{{ url("https://calecai.caibo.it/calecai/public") }}">Home</a></li>
                 @endif
 
                 {{ $slot }}

@@ -131,8 +131,8 @@
         <x-menu-bar-home>
             <div class="container-sm">
 
-                <button class="btn btn-primary" onclick="window.close();">Chiudi Pagina</button>
-
+               {{--   <button class="btn btn-primary" onclick="window.close();">Chiudi Pagina</button>--}}
+                <button class="btn btn-primary" onclick="window.history.back();">Ritorno</button>
         </x-menu-bar-home>
 
 
@@ -229,8 +229,8 @@
                         </button> --}}
 
                         
-                        <button class="btn btn-danger" onclick="window.close();">Chiudi Pagina</button>
-
+                       {{--  <button class="btn btn-danger" onclick="window.close();">Chiudi Pagina</button> --}}
+                        <button class="btn btn-primary" onclick="window.history.back();">Chiudi Pagina</button>
 
 
                     </div>
