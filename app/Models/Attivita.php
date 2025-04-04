@@ -23,7 +23,6 @@ class Attivita extends Model
         'altro',
         'specializzazione',
         'altriorganizzatori',
-        'tipologia',
         'difficolta',
         'durata',
         'socio',
@@ -42,8 +41,7 @@ class Attivita extends Model
        'link_modulo_esterno',
         'descrizione',
         'note',
-        'image1_file',
-        'image2_file',
+        'image_file',
         'inizio_iscrizioni',
         'fine_iscrizioni',
         'user_email'
