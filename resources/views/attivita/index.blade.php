@@ -10,15 +10,15 @@
 
         $user = auth()->user();
 
-$tipoattivita = TipoAttivita::where('published', 1)->get();
-//dd($tipoattivita);
-//$tipoattivita = TipoAttivita::where('published', 1) ->whereNotIn('id', [0,1]) ->pluck('nome') ->toArray();
-$scelteinterne = TipoScelteInterne::where('published', 1)->get();
+        $tipoattivita = TipoAttivita::where('published', 1)->get();
+        //dd($tipoattivita);
+        //$tipoattivita = TipoAttivita::where('published', 1) ->whereNotIn('id', [0,1]) ->pluck('nome') ->toArray();
+        $scelteinterne = TipoScelteInterne::where('published', 1)->get();
 
-$tipoiscrizione = TipoIscrizione::where('published', 1)->get();
-$tipovolantino = TipoVolantino::where('published', 1)->get();
-//$attivita = Attivita::all();
-$attivita = $viewData['attivita'];
+        $tipoiscrizione = TipoIscrizione::where('published', 1)->get();
+        $tipovolantino = TipoVolantino::where('published', 1)->get();
+        //$attivita = Attivita::all();
+        $attivita = $viewData['attivita'];
 
     @endphp
 
@@ -34,10 +34,10 @@ $attivita = $viewData['attivita'];
 
     }
 
-   
+
 
     .card.carta {
-        
+
         padding: 5px;
         /* width: 18rem;*/
         margin: 10px;
@@ -142,6 +142,7 @@ $attivita = $viewData['attivita'];
         border: solid 1px #cccccc;
         border-radius: 5px;
         height: 37px;
+        margin-top:10px;
 
     }
 
@@ -162,6 +163,9 @@ $attivita = $viewData['attivita'];
         color: green;
     }
 
+    .container-bar {
+        padding-left: 50px;
+    }
     /* Responsive Styles */
     @media (max-width: 1200px) {
         .grid-container_attivita {
@@ -189,39 +193,52 @@ $attivita = $viewData['attivita'];
     <div id="main">
 
         <div class="container-fluid_x index">
-
-            <x-menu-bar>
-
-                <form action="{{ url('attivita/cerca' . '/index') }}" method="GET">
-                    <label class="lb_cerca"> </label>
-                    <input type="text" class="cerca" name="cerca" placeholder="Inserisci una parola del titolo">
-                    <button type="submit" style="margin-top:-3px;" class="btn btn-primary btn-sm">Cerca</button>
-                </form>
-
-            </x-menu-bar>
-
-            @if (session('message'))
-                <div class="alert alert-success">
-                    {{ session('message') }}
+            <div class="container-bar">
+                <div class="row">
+                    <div class="col-sm">
+                        <x-menu-bar>
+                         </x-menu-bar> 
+                    </div>
+                    <div class="col-sm">
+                        <form action="{{ url('attivita/cerca' . '/index') }}" method="GET"
+                            style="display: flex; align-items: center; margin-left: 20px;">
+                            <label class="lb_cerca"> </label>
+                            <input type="text" class="cerca" name="cerca"
+                                placeholder="Inserisci una parola del titolo">
+                            <button type="submit" style="margin-top:5px;margin-left:5px"
+                                class="btn btn-primary btn-sm">Cerca</button>
+                        </form>
+                    </div>
+                    <div class="col-sm">
+                        <li class="l"><a class="btn btn-link btn-sm" href="{{ url('/fullcalender/showCalendar') }}">Calendario</a></li>
+                    </div>
                 </div>
-            @endif
-            <div class="container-xl">
-                <div class="grid-container_attivita">
-                    <!-- visualizza tipo di attivita nel box in alto -->
-                    @foreach ($attivita as $attiv)
-                        <div class="card carta">
-                            @if (in_array($attiv->tipo_attivita, [0]))
-                                @include('parziali.calendario', ['attivita' => $attiv])
-                            @elseif (in_array($attiv->tipo_attivita, [ 1,2,3,4,5,6,7,8,9]))
-                                @include('parziali.trekking', ['attivita' => $attiv])
-                            @endif
-                        </div>
-                    @endforeach
-
-                </div>
-
             </div>
         </div>
+
+       
+        @if (session('message'))
+            <div class="alert alert-success">
+                {{ session('message') }}
+            </div>
+        @endif
+        <div class="container-xl">
+            <div class="grid-container_attivita">
+                <!-- visualizza tipo di attivita nel box in alto -->
+                @foreach ($attivita as $attiv)
+                    <div class="card carta">
+                        @if (in_array($attiv->tipo_attivita, [0]))
+                            @include('parziali.calendario', ['attivita' => $attiv])
+                        @elseif (in_array($attiv->tipo_attivita, [1, 2, 3, 4, 5, 6, 7, 8, 9]))
+                            @include('parziali.trekking', ['attivita' => $attiv])
+                        @endif
+                    </div>
+                @endforeach
+
+            </div>
+
+        </div>
+    </div>
 
 
 

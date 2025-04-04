@@ -19,51 +19,56 @@ class AttivitaController extends Controller
 
      public function index(Request $request): \Illuminate\Contracts\View\View
      {
-         $data = $request->input('date');
-         $categoria = $request->input('attivita');
-         $anno                 = now()->year;
-         $dataOggius = Carbon::now()->toDateString(); 
-         if($data == 'dataOggi'){
-             // crea data oggi europea
-             $data = Carbon::createFromFormat("Y-m-d", $dataOggius)->format("d-m-Y");
-         }else{
-             $data = $data.$anno;// aggiunge alla data del mese recuperato dalla tabella tipo_data, l'anno
-         }
+        $data = $request->input('date');
+        $categoria = $request->input('attivita');
+        $anno                 = now()->year;
+        $dataOggius = Carbon::now()->toDateString(); 
+      
+        if($data == 'dataOggi'){
+            // crea data oggi europea
+            $data = Carbon::createFromFormat("Y-m-d", $dataOggius)->format("d-m-Y");
+        }else{
+            $data = $data.$anno;// aggiunge alla data del mese recuperato dalla tabella tipo_data, l'anno
+        }
 
-             $viewData             = [];
-             // converte data in formato usa
-             $data          = Carbon::createFromFormat("d-m-Y", $data)->format("Y-m-d");
-             // seleziona tipo_attivita 10 = tutti, $categoria = tipo_attivita
-             if ($categoria == 10) {
-                $viewData['attivita'] = Attivita::where('published', 1)
-                ->where(function ($query) use ($data) {
-                    $query->where(function ($query) use ($data) {
-                        $query->where('calendario', 0)
-                            ->whereDate('data_inizio', '>=', $data);
-                    })->orWhere(function ($query) use ($data) {
-                        //$query->where('tipo_attivita', 2)// calendario
-                        $query->where('calendario', '>=', 1)
-                            ->whereDate('data_fine', '>=', $data);
-                    });
-                })
-                ->get();
-             } else {
-                $viewData['attivita'] = Attivita::where('published', 1)
-                ->where('tipo_attivita', $categoria)
-                ->where(function ($query) use ($data) {
-                    $query->where(function ($query) use ($data) {
-                        $query->where('calendario', 0)
-                            ->whereDate('data_inizio', '>=', $data);
-                    })->orWhere(function ($query) use ($data) {
-                        $query->where('calendario', '>=', 1)
-                            ->whereDate('data_fine', '>=', $data);
-                    });
-                })
-                ->get();
-    // dd($viewData);
-            }
- 
-             return view('attivita.index')->with("viewData", $viewData);
+            $viewData             = [];
+
+            // converte data in formato usa
+           $data          = Carbon::createFromFormat("d-m-Y", $data)->format("Y-m-d");
+      //  dd($data,$categoria);   
+            // seleziona tipo_attivita 10 = tutti, $categoria = tipo_attivita
+            if ($categoria == 'Tutti') {
+               $viewData['attivita'] = Attivita::where('published', 1)
+               ->where(function ($query) use ($data) {
+                   $query->where(function ($query) use ($data) {
+                       $query->where('calendario', 0)
+                           ->whereDate('data_inizio', '>=', $data);
+                   })->orWhere(function ($query) use ($data) {
+                       //$query->where('tipo_attivita', 2)// calendario
+                       $query->where('calendario', '>=', 1)
+                           ->whereDate('data_fine', '>=', $data);
+                   });
+               })
+               ->get();
+            } else {
+               $viewData['attivita'] = Attivita::where('published', 1)
+               ->where('tipo_attivita', $categoria)
+               ->where(function ($query) use ($data) {
+                   $query->where(function ($query) use ($data) {
+                       
+                       $query->where('calendario', 0)
+                           ->whereDate('data_inizio', '>=', $data);
+                   })->orWhere(function ($query) use ($data) {
+                      
+                       $query->where('calendario', '>=', 1)
+                           ->whereDate('data_fine', '>=', $data);
+                   });
+               })
+               ->get();
+   // dd($viewData);
+           }
+
+            return view('attivita.index')->with("viewData", $viewData);
          
      }
      
