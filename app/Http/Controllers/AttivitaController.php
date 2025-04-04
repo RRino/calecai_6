@@ -52,11 +52,9 @@ class AttivitaController extends Controller
                 ->where('tipo_attivita', $categoria)
                 ->where(function ($query) use ($data) {
                     $query->where(function ($query) use ($data) {
-                        
                         $query->where('calendario', 0)
                             ->whereDate('data_inizio', '>=', $data);
                     })->orWhere(function ($query) use ($data) {
-                       
                         $query->where('calendario', '>=', 1)
                             ->whereDate('data_fine', '>=', $data);
                     });

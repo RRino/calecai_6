@@ -17,7 +17,6 @@ class FullCalenderController extends Controller
     {
         dd($id);    
 
-        
     }
 public function showCalendar()
 {
