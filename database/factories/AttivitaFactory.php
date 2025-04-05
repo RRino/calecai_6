@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Attivita>
@@ -18,9 +19,10 @@ class AttivitaFactory extends Factory
     {
         $start_day = fake()->dateTimeInInterval('now', '+6 months');
         return [
-            'tipo_volantino' => 0,
+            'tipo_volantino' => fake()->randomElement(ValideModelValues::getValues('tipo_volantinos', 'tipo_volantino')),
             'socio' => fake()->word(),
-            'tipo_attivita' => 1,
+            // 'tipo_attivita' => fake()->randomElement(ValideModelValues::getValues('tipo_attivitas', 'tipo_attivita')),
+            'tipo_attivita' => fake()->randomElement([1,2,3,4,5,6,7,8,9]),
             'tipo_iscrizione' => '3',
             'titolo' => fake()->sentence(),
             'descrizione' => fake()->paragraph(),
@@ -57,7 +59,7 @@ class AttivitaFactory extends Factory
             'data_presentazione' => fake()->dateTimeInInterval($start_day, '-6 days'),
             'contatti' => fake()->word(),
             'altro' => fake()->word(),
-            'altriorganizzatori' => fake()->word(),            
+            'altriorganizzatori' => fake()->word(),
             'altricosti' => fake()->word(),
             'linkluogo' => fake()->url(),
             'link_modulo_esterno' => fake()->url(),
@@ -68,5 +70,14 @@ class AttivitaFactory extends Factory
             'created_at' => now(),
             'updated_at' => now(),
         ];
+    }
+}
+
+class ValideModelValues
+{
+    public static function getValues(string $table, string $column)
+    {
+        $values = DB::table($table)->pluck($column);
+        return $values;
     }
 }
