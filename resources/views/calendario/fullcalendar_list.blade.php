@@ -115,7 +115,7 @@ td.fc-list-event-time {
                 views: {
                     listDay: { buttonText: 'Lista Giornaliera' },
                     listWeek: { buttonText: 'Lista Settimanale' },
-                    dayGridMonth: { buttonText: 'Lista Mensile' }
+                    dayGridMonth: { buttonText: 'Griglia Mensile' }
                 },
                 events: events,
                 eventClick: function(info) {
