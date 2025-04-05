@@ -17,14 +17,14 @@ class FullCalenderController extends Controller
     {
         $events = Event::all();
 
-        return view('fullcalendar_list', compact('events')); 
+        return view('calendario.fullcalendar_list', compact('events')); 
 
     }
 public function showCalendar()
 {
     $events = Event::all();
 
-    return view('fullcalendar', compact('events'));
+    return view('calendario.fullcalendar', compact('events'));
 }
     /**
      * Write code on Method

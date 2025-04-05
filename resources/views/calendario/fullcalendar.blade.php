@@ -94,15 +94,43 @@ $eventis = Event::all();
             //}
 
             eventClick: function(info) {
-                    alert('Dettagli evento:\n' +
-                          'id: ' + info.event.id + '\n' +
-                          'Titolo: ' + info.event.title + '\n' +
-                          'Data inizio: ' + info.event.start.toISOString() + '\n' +
-                          (info.event.end ? 'Data fine: ' + info.event.end.toISOString() : '') + '\n' +
-                          'Descrizione: ' + (info.event.extendedProps.description || 'Nessuna descrizione'));
-                          window.location.href = 'https://calecai.caibo.it/calecai/public/attivita/singolo/' + info.event.id;
-                // Reindirizza alla pagina specifica dell'evento
-                }
+                // Crea un elemento div per il popup
+                var popup = document.createElement('div');
+                popup.style.position = 'fixed';
+                popup.style.top = '50%';
+                popup.style.left = '50%';
+                popup.style.transform = 'translate(-50%, -50%)';
+                popup.style.backgroundColor = 'white';
+                popup.style.padding = '20px';
+                popup.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+                popup.style.zIndex = '1000';
+
+                // Aggiungi i dettagli dell'evento al popup
+                popup.innerHTML = `
+                    <p><strong>Dettagli evento:</strong></p>
+                    <p>id: ${info.event.id}</p>
+                    <p>Titolo: ${info.event.title}</p>
+                    <p>Tipo attività: ${info.event.extendedProps.tipo_attivita || 'N/A'}</p>
+                    <p>Data inizio: ${info.event.start.toISOString()}</p>
+                    ${info.event.end ? `<p>Data fine: ${info.event.end.toISOString()}</p>` : ''}
+                    <p>Descrizione: ${info.event.extendedProps.description || 'Nessuna descrizione'}</p>
+                    <button id="closePopup" style="margin-right: 10px;">Annulla</button>
+                    <button id="redirectEvent">Vai all'evento</button>
+                `;
+
+                // Aggiungi il popup al body
+                document.body.appendChild(popup);
+
+                // Gestisci il click sul bottone "Annulla"
+                document.getElementById('closePopup').addEventListener('click', function() {
+                    document.body.removeChild(popup);
+                });
+
+                // Gestisci il click sul bottone "Vai all'evento"
+                document.getElementById('redirectEvent').addEventListener('click', function() {
+                    window.location.href = 'https://calecai.caibo.it/calecai/public/attivita/singolo/' + info.event.id;
+                });
+            }
         });
 
         calendar.render();
