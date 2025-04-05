@@ -17,6 +17,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        DB::table('users')->truncate();
         User::factory()->create([
             'name' => 'Test Accompagnatore',
             'email' => 'accompagnatore@example.com','role' => 'accompagnatore','is_admin'=>0,'password' => Hash::make('12345678')

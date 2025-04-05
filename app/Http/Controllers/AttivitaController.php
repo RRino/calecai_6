@@ -684,6 +684,7 @@ function attivita_convert_cal()
         $attivitaConv->id = $data->id;
 
         $attivitaConv->title = $data->titolo;
+        $attivitaConv->tipo_attivita = $tipoattivita->find($data->tipo_attivita)->nome;
         $attivitaConv->description = $data->descrizione;
         $datainizio = DateTime::createFromFormat('Y-m-d', $data->data_inizio)->format('d-m-Y');
         $datafine = DateTime::createFromFormat('Y-m-d', $data->data_fine)->format('d-m-Y');
