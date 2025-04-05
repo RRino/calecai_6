@@ -211,6 +211,8 @@
                     </div>
                     <div class="col-sm">
                         <li style="margin-top:10px;"><a class="btn btn-primary btn-sm" href="{{ url('/fullcalender/showCalendar') }}">Calendario</a></li>
+                    
+                        <li style="margin-top:10px;"><a class="btn btn-primary btn-sm" href="{{ url('/fullcalender/showCalendar_list') }}">Calendario_lista</a></li>
                     </div>
                 </div>
             </div>

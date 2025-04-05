@@ -13,9 +13,11 @@ class FullCalenderController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function show($id)
+    public function showCalendar_list()
     {
-        dd($id);    
+        $events = Event::all();
+
+        return view('fullcalendar_list', compact('events')); 
 
     }
 public function showCalendar()

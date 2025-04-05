@@ -16,19 +16,9 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\FullCalenderController;
   
 Route::controller(FullCalenderController::class)->group(function(){
-    Route::get('fullcalender', 'index');
-    Route::post('fullcalenderAjax', 'ajax');
+
     Route::get('fullcalender/showCalendar', 'showCalendar')->name('fullcalender.showCalendar');
-    Route::get('fullcalender/show', 'show')->name('fullcalender.show');
-    Route::post('fullcalender/store', 'store')->name('fullcalender.store');
-    Route::post('fullcalender/update', 'update')->name('fullcalender.update');
-    Route::post('fullcalender/destroy', 'destroy')->name('fullcalender.destroy');
-    Route::get('fullcalender/getEvents', 'getEvents')->name('fullcalender.getEvents');
-    Route::get('fullcalender/getEvent/{id}', 'getEvent')->name('fullcalender.getEvent');
-    Route::post('fullcalender/updateEvent', 'updateEvent')->name('fullcalender.updateEvent');
-    Route::post('fullcalender/deleteEvent', 'deleteEvent')->name('fullcalender.deleteEvent');
-    Route::post('fullcalender/createEvent', 'createEvent')->name('fullcalender.createEvent');
-    Route::get('/event/{id}', 'show')->name('event.show');
+    Route::get('fullcalender/showCalendar_list', 'showCalendar_list')->name('fullcalender.showCalendar_list');
 });
 
 
