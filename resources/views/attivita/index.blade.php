@@ -33,9 +33,6 @@
         gap: 10px;
 
     }
-
-
-
     .card.carta {
 
         padding: 5px;
@@ -96,48 +93,37 @@
         /* Aggiungi uno spazio tra l'etichetta e l'input */
         font-weight: 600;
     }
-
     .caltext {
         text-align: center;
         text-wrap: wrap;
         color: blue;
     }
-
-
-
     .btprog {
         margin-left: 10px;
         margin-right: 10px;
     }
-
     .rif {
         font-size: 7px;
         margin-left: 50%;
 
     }
-
     .fondo {
         height: 10px;
 
     }
-
     .mod {
         margin-top: -10px;
         font-size: 11px;
-
     }
-
     .contatti {
         min-height: 20px;
         margin-left: 10px;
     }
-
     .lb_cerca {
         margin-left: 3px;
         margin-right: 3px;
         color: blue;
     }
-
     .cerca {
         border: solid 1px #cccccc;
         border-radius: 5px;
@@ -145,24 +131,19 @@
         margin-top:10px;
 
     }
-
     .socio {
         color: blue;
     }
-
     .libera {
         color: blue;
     }
-
     a {
         text-decoration: none !important
     }
-
     .item_2 {
         margin-left: 16px;
         color: green;
     }
-
     .container-bar {
         padding-left: 50px;
     }
@@ -191,7 +172,6 @@
 <x-layout_cai>
 
     <div id="main">
-
         <div class="container-fluid_x index">
             <div class="container-bar">
                 <div class="row">
@@ -211,23 +191,22 @@
                     </div>
                     <div class="col-sm">
                       {{--   <li style="margin-top:10px;"><a class="btn btn-primary btn-sm" href="{{ url('/fullcalender/showCalendar') }}">Calendario</a></li>--}} 
-                    
                         <li style="margin-top:10px;"><a class="btn btn-primary btn-sm" href="{{ url('/fullcalender/showCalendar_list') }}">Calendario</a></li>
                     </div>
                 </div>
             </div>
         </div>
 
-       
         @if (session('message'))
             <div class="alert alert-success">
                 {{ session('message') }}
             </div>
         @endif
+
         <div class="container-xl">
             <div class="grid-container_attivita">
                 <!-- visualizza tipo di attivita nel box in alto -->
-                @foreach ($attivita as $attiv)
+                 @foreach ($attivita as $attiv)
                     <div class="card carta">
                         @if (in_array($attiv->tipo_attivita, [0]))
                             @include('parziali.calendario', ['attivita' => $attiv])
