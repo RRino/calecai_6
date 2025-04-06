@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('description');
             $table->date('start');
             $table->date('end');
+            $table->string('image_url');
+            $table->string('lunghezza');
+            $table->string('durata');
+            $table->string('difficolta');
             $table->timestamps();
         });
     }

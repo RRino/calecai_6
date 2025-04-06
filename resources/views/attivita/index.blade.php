@@ -147,6 +147,12 @@
     .container-bar {
         padding-left: 50px;
     }
+
+    .col-sm {
+    border: solid 1px #ccc;
+    margin: 5px;
+    border-radius: 3px;
+}
     /* Responsive Styles */
     @media (max-width: 1200px) {
         .grid-container_attivita {

@@ -690,8 +690,12 @@ function attivita_convert_cal()
         $datafine = DateTime::createFromFormat('Y-m-d', $data->data_fine)->format('d-m-Y');
         $attivitaConv->start =$data->data_inizio;
         $attivitaConv->end = $data->data_fine;
-
-       // $attivitaConv->created_at = $data->created_at;
+        $attivitaConv->image_url = 'https://calecai.caibo.it/calecai/public/storage/imgtrek/'.$data->image_file;
+        $attivitaConv->lunghezza = $data->lunghezza;
+        $attivitaConv->durata = $data->durata;
+        $attivitaConv->difficolta = $tipodifficolta->find($data->tipo_difficolta)->nome;
+      
+        // $attivitaConv->created_at = $data->created_at;
        // $attivitaConv->updated_at = $data->updated_at;
         $attivitaConv->save();
 
