@@ -182,7 +182,10 @@
             <div class="container-bar">
                 <div class="row">
                     <div class="col-sm">
-                        
+                        <div class="col-sm">
+                            <x-menu-bar>
+                             </x-menu-bar> 
+                        </div>
                     </div>
 
 
