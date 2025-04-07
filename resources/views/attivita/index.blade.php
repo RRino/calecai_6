@@ -179,6 +179,7 @@
 
     <div id="main">
         <div class="container-fluid_x index">
+            
             <div class="container-bar">
                 <div class="row">
                     <div class="col-sm">
