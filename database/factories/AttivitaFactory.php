@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use DateTime;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\DB;
 
@@ -18,9 +19,9 @@ class AttivitaFactory extends Factory
      */
     public function definition(): array
     {
-        $date_format = 'Y-m-d';
+        $date_format = 'd-m-Y';
         $start_day = fake()->dateTimeBetween('-1 year', '+1 year');
-        $end_day = new DateTime(($start_day->format($date_format)));
+        $end_day = new DateTime(($start_day->format(DateTimeInterface::ATOM)));
         $end_day->modify('+7 days');
         $end_days = [
             $start_day,
@@ -29,9 +30,9 @@ class AttivitaFactory extends Factory
             fake()->dateTimeBetween($start_day, $end_day)
         ];
         $end_day = $end_days[array_rand($end_days)];
-        $sooner_enrollment_day = new DateTime($start_day->format($date_format));
-        $sooner_enrollment_day->modify('-3 months');
-        $later_enrollment_day = new DateTime($start_day->format($date_format));
+        $sooner_enrollment_day = new DateTime($start_day->format(DateTimeInterface::ATOM));
+        $sooner_enrollment_day->modify('-3 months')->format(DateTimeInterface::ATOM);
+        $later_enrollment_day = new DateTime($start_day->format(DateTimeInterface::ATOM));
         $later_enrollment_day->modify('-1 week');
         $start_enrollment_day = fake()->dateTimeBetween(
             $sooner_enrollment_day,
@@ -99,12 +100,12 @@ class AttivitaFactory extends Factory
             'quotamassima' => fake()->numberBetween(1, 100),
             'a_spinta' => fake()->word(),
             'portage' => fake()->word(),
-            'image_file' => fake()->imageUrl(),
-            'pdf_file' => fake()->filePath(),
+            'image_file' => fake()->randomElement(['1.png', '2.png', '3.png', '4.png', '5.png']),
+            'pdf_file' => fake()->randomElement(['1.pdf', '2.pdf', '3.pdf', '4.pdf', '5.pdf']),
             'link_volantino' => fake()->url(),
             'email_user' => fake()->unique()->safeEmail(),
             'presentazione' => fake()->word(),
-            'data_presentazione' => $sooner_enrollment_day->format($date_format),
+            'data_presentazione' => $sooner_enrollment_day->format(($date_format)),
             'contatti' => fake()->word(),
             'altro' => fake()->word(),
             'altriorganizzatori' => fake()->word(),
