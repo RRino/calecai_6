@@ -33,8 +33,36 @@
     }
 
     .sito{
-        margin-top:140px;
+        margin-top:100px;
         margin-left:30%;
+    }
+
+    .sito a{
+        color: white;
+        /* Cambia il colore del testo in bianco */
+        text-decoration: none;
+        /* Rimuove la sottolineatura */
+        font-weight: 700;
+        font-size:16px;
+    }
+    .sito a:hover{
+        text-decoration: underline;
+        /* Sottolinea durante l'hover */
+    }
+    .sito .navbar-nav .nav-link {
+        color: white !important;
+        /* Cambia il colore del testo in bianco */
+        font-weight: 700;
+        font-size:16px;
+    }
+
+    nav.navbar.navbar-expand-lg.navbar-light.bg-light {
+    background: #00366B !important;
+}
+
+.navbar-expand-lg .navbar-nav .dropdown-menu {
+        position: absolute;
+        background: #00366B;
     }
 </style>
 
@@ -51,12 +79,38 @@
         </div>
 
         <div class="sito">
-            @if (app()->environment('local'))
-                <li class="homeattivita"><a class="btn btn-link btn-sm"
-                        href="{{ url('http://localhost/testwp/') }}">Home</a></li>
-            @else
-                <li class="homeattivita"><a class="btn btn-link btn-sm"
-                        href="{{ url('https://calecai.caibo.it/calecai/public') }}">Home</a></li>
-            @endif
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                  <a class="navbar-brand" href="#">Home</a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                      <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                      </li>
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="attivitaDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Attività
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="attivitaDropdown">
+                          <li><a class="dropdown-item" href="/attivita/attiv1">Attiv1</a></li>
+                        </ul>
+                      </li>
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dataDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Data
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dataDropdown">
+                          <li><a class="dropdown-item" href="/data/oggi">Oggi</a></li>
+                          <li><a class="dropdown-item" href="/data/domani">Domani</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </nav>
+              
         </div>
 </div>

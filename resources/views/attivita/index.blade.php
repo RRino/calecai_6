@@ -182,9 +182,10 @@
             <div class="container-bar">
                 <div class="row">
                     <div class="col-sm">
-                        <x-menu-bar>
-                         </x-menu-bar> 
+                        
                     </div>
+
+
                     <div class="col-sm">
                         <form action="{{ url('attivita/cerca' . '/index') }}" method="GET"
                             style="display: flex; align-items: center; margin-left: 20px;">
