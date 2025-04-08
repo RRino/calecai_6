@@ -697,7 +697,7 @@ function attivita_convert_cal()
       
         // $attivitaConv->created_at = $data->created_at;
        // $attivitaConv->updated_at = $data->updated_at;
-       // $attivitaConv->save();
+       $attivitaConv->save();
 
     }
 }
