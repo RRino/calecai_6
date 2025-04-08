@@ -14,7 +14,7 @@
               Attività
             </a>
             <ul class="dropdown-menu" aria-labelledby="attivitaDropdown">
-              <li><a class="dropdown-item" href="/attivita/attiv1">Attiv1</a></li>
+              <li><a class="dropdown-item" href="/attivita/attiv1">Attiv1x</a></li>
             </ul>
           </li>
           <li class="nav-item dropdown">

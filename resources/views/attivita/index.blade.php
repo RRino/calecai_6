@@ -178,30 +178,7 @@
 <x-layout_cai>
 
     <div id="main">
-        <div class="container-fluid_x index">
-            <div class="container-bar">
-                <div class="row">
-                    <div class="col-sm">
-                        <x-menu-bar>
-                         </x-menu-bar> 
-                    </div>
-                    <div class="col-sm">
-                        <form action="{{ url('attivita/cerca' . '/index') }}" method="GET"
-                            style="display: flex; align-items: center; margin-left: 20px;">
-                            <label class="lb_cerca"> </label>
-                            <input type="text" class="cerca" name="cerca"
-                                placeholder="Inserisci una parola del titolo">
-                            <button type="submit" style="margin-top:5px;margin-left:5px"
-                                class="btn btn-primary btn-sm">Cerca</button>
-                        </form>
-                    </div>
-                    <div class="col-sm">
-                      {{--   <li style="margin-top:10px;"><a class="btn btn-primary btn-sm" href="{{ url('/fullcalender/showCalendar') }}">Calendario</a></li>--}} 
-                        <li style="margin-top:10px;"><a class="btn btn-primary btn-sm" href="{{ url('/fullcalender/showCalendar_list') }}">Calendario</a></li>
-                    </div>
-                </div>
-            </div>
-        </div>
+    
 
         @if (session('message'))
             <div class="alert alert-success">
