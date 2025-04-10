@@ -83,12 +83,14 @@ class AttivitaController extends Controller
 
 
 
-    public function index_attivita($categoria,$dataOggi): \Illuminate\Contracts\View\View
+    public function index_attivita($categoria): \Illuminate\Contracts\View\View
     {
+
         $dataOggi = $dataOggi ?? now()->format('Y-m-d'); // Usa la data di oggi se non è fornita
+        $dataOggius = Carbon::now()->toDateString();
         $viewData = [];
-        $dataOggius = Carbon::createFromFormat("d-m-Y", $dataOggi)->format("Y-m-d");
-        $viewData['dataoggi'] = $dataOggi;
+       // $dataOggius = Carbon::createFromFormat("d-m-Y", $dataOggi)->format("Y-m-d");
+        //$viewData['dataoggi'] = $dataOggi;
     
 
         // seleziona tipo_attivita 99 = tutti, $categoria = tipo_attivita
@@ -106,6 +108,21 @@ class AttivitaController extends Controller
                         });
                     })
                     ->get();
+        }else{
+            $viewData['attivita'] = Attivita::where('published', 1)
+                ->where('tipo_attivita', $categoria)
+                ->where(function ($query) use ($dataOggius) {
+                    // usa data_inizio per filtrare le attivita da visualizzare
+                    $query->where(function ($query) use ($dataOggius) {
+                        $query->where('calendario', 0)
+                            ->whereDate('data_inizio', '>=', $dataOggius);
+                    })->orWhere(function ($query) use ($dataOggius) {
+                        // usa data_fine se il campo 'calendario' contiene 1 utilizza data fine per filtrare le attivita da visualizzare
+                        $query->where('calendario', '>=', 1)
+                            ->whereDate('data_fine', '>=', $dataOggius);
+                    });
+                })
+                ->get();
         }
 
         return view('attivita.index')->with("viewData", $viewData);
@@ -536,12 +553,14 @@ class AttivitaController extends Controller
         $viewData = DB::table('rino4_evetrek_eventos')->where('id', '>=', 855)->get();
 
         foreach ($viewData as $data) {
+           
             if (Carbon::parse($data->znminizio)->lt(now())) {
                 continue;
             }
             if (Attivita::where('titolo', $data->title)->exists()) {
                 continue;
             }
+           
             $attivita = new Attivita;
             $attivita->titolo = $data->title;
             if ($data->descrizione != null) {

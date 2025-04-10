@@ -88,6 +88,10 @@
                                 <ul class="navbar-nav">
                                     <li class="nav-item">
                                         <a class="nav-link active" aria-current="page"
+                                            href="/attivita/list">Lista</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link active" aria-current="page"
                                             href="/fullcalender/showCalendar_list">Calendario</a>
                                     </li>
                                     <li class="nav-item dropdown">
@@ -96,10 +100,12 @@
                                             Attività
                                         </a>
                                         <ul class="dropdown-menu" aria-labelledby="attivitaDropdown">
-                                            <li><a class="dropdown-item" href="/attivita/index/1">Trekking</a></li>
-                                            <li><a class="dropdown-item" href="/attivita/index">Corsi</a></li>
+                                            <li><a class="dropdown-item" href="/attivita/index_attivita/10">Tutte</a></li>
+                                            <li><a class="dropdown-item" href="/attivita/index_attivita/1">Trekking</a></li>
+                                            <li><a class="dropdown-item" href="/attivita/index_attivita/2">Corsi</a></li>
                                           </ul>
                                     </li>
+                                    <!--
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle" href="#" id="dataDropdown"
                                             role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -109,7 +115,7 @@
                                             <li><a class="dropdown-item" href="/data/oggi">Oggi</a></li>
                                             <li><a class="dropdown-item" href="/data/domani">Domani</a></li>
                                         </ul>
-                                    </li>
+                                    </li>-->
                                 </ul>
                             </div>
                         </div>
