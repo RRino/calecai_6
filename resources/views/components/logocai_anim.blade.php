@@ -1,3 +1,7 @@
+@php
+    $user = auth()->user();
+@endphp
+
 <style>
     .container_logo {
         display: flex;
@@ -22,7 +26,6 @@
 
     .sito {
         margin-top: 100px;
-        margin-left: 30%;
     }
 
     .sito a {
@@ -58,6 +61,8 @@
         position: absolute;
         background: #00366B;
     }
+
+
 </style>
 
 
@@ -78,7 +83,7 @@
                 <div class="sito">
                     <nav class="navbar navbar-expand-lg navbar-light bg-light">
                         <div class="container-fluid">
-                            <a class="navbar-brand" href="#">Home</a>
+                            <a class="navbar-brand" href="localhost/testwp">Home</a>
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
                                 aria-label="Toggle navigation">
@@ -86,23 +91,37 @@
                             </button>
                             <div class="collapse navbar-collapse" id="navbarNav">
                                 <ul class="navbar-nav">
+                                    @if($user && $user->is_admin)
                                     <li class="nav-item">
                                         <a class="nav-link active" aria-current="page"
-                                            href="/attivita/list">Lista</a>
+                                            href="/attivita/list"><span style="color:yellow;">Lista</span></a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page"
+                                        <a class="nav-link active addattiv" aria-current="page"
+                                            href="/form/page1"><span style="color:yellow;">Aggiungi_attività</span></a>
+                                    </li>
+                                    @endif
+                                   
+                                    <li class="nav-item">
+                                        <a  class="nav-link active" aria-current="page"
                                             href="/fullcalender/showCalendar_list">Calendario</a>
                                     </li>
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle" href="#" id="attivitaDropdown"
                                             role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Attività
+                                            Seleziona_attività
                                         </a>
                                         <ul class="dropdown-menu" aria-labelledby="attivitaDropdown">
                                             <li><a class="dropdown-item" href="/attivita/index_attivita/10">Tutte</a></li>
                                             <li><a class="dropdown-item" href="/attivita/index_attivita/1">Trekking</a></li>
                                             <li><a class="dropdown-item" href="/attivita/index_attivita/2">Corsi</a></li>
+                                            <li><a class="dropdown-item" href="/attivita/index_attivita/3">Grandi_Trekking</a></li>
+                                            <li><a class="dropdown-item" href="/attivita/index_attivita/4">Scialpinismo</a></li>
+
+                                            <li><a class="dropdown-item" href="/attivita/index_attivita/5">Ciclo_escursionismo</a></li>
+                                            <li><a class="dropdown-item" href="/attivita/index_attivita/6">Alpinismo_giovanile</a></li>
+                                            <li><a class="dropdown-item" href="/attivita/index_attivita/8">Evendi_CAIBO</a></li>
+                                       
                                           </ul>
                                     </li>
                                     <!--

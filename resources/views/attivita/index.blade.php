@@ -26,151 +26,9 @@
 
 
 <style>
-    .grid-container_attivita {
-        display: grid;
-        grid-template-rows: repeat(4, 1fr);
-        grid-template-columns: repeat(4, 1fr);
-        gap: 10px;
 
-    }
-    .card.carta {
 
-        padding: 5px;
-        /* width: 18rem;*/
-        margin: 10px;
-        border-radius: 1px;
-        padding-bottom: 20px;
-    }
 
-    .img_box {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: 10px;
-        width: 100%;
-        height: 250px;
-        padding-right: 5px;
-    }
-
-    .card-text {
-        margin-bottom: 0;
-        height: 80px;
-        overflow: auto
-    }
-
-    .card-title {
-        height: 40px;
-        overflow: auto;
-        font-size: 14px;
-        font-weight: 600;
-        height: auto;
-    }
-
-    .gruppo-titolo {
-        min-height: 100px;
-        padding-left: 10px;
-    }
-
-    .categoria {
-        text-align: center;
-        color: rgb(88 12 12);
-        font-weight: 700;
-    }
-
-    .list-date {
-        margin-left: -40px;
-    }
-
-    .dv {
-        display: flex;
-        align-items: center;
-    }
-
-    .lab {
-        white-space: nowrap;
-        /* Impedisce al testo di andare a capo */
-        margin-right: 10px;
-        /* Aggiungi uno spazio tra l'etichetta e l'input */
-        font-weight: 600;
-    }
-    .caltext {
-        text-align: center;
-        text-wrap: wrap;
-        color: blue;
-    }
-    .btprog {
-        margin-left: 10px;
-        margin-right: 10px;
-    }
-    .rif {
-        font-size: 7px;
-        margin-left: 50%;
-
-    }
-    .fondo {
-        height: 10px;
-
-    }
-    .mod {
-        margin-top: -10px;
-        font-size: 11px;
-    }
-    .contatti {
-        min-height: 20px;
-        margin-left: 10px;
-    }
-    .lb_cerca {
-        margin-left: 3px;
-        margin-right: 3px;
-        color: blue;
-    }
-    .cerca {
-        border: solid 1px #cccccc;
-        border-radius: 5px;
-        height: 37px;
-        margin-top:10px;
-
-    }
-    .socio {
-        color: blue;
-    }
-    .libera {
-        color: blue;
-    }
-    a {
-        text-decoration: none !important
-    }
-    .item_2 {
-        margin-left: 16px;
-        color: green;
-    }
-    .container-bar {
-        padding-left: 50px;
-    }
-
-    .col-sm {
-    border: solid 1px #ccc;
-    margin: 5px;
-    border-radius: 3px;
-}
-    /* Responsive Styles */
-    @media (max-width: 1200px) {
-        .grid-container_attivita {
-            grid-template-columns: repeat(3, 1fr);
-        }
-    }
-
-    @media (max-width: 900px) {
-        .grid-container_attivita {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-    @media (max-width: 600px) {
-        .grid-container_attivita {
-            grid-template-columns: 1fr;
-        }
-    }
 </style>
 
 <x-logocai_anim />
@@ -178,7 +36,6 @@
 <x-layout_cai>
 
     <div id="main">
-    
 
         @if (session('message'))
             <div class="alert alert-success">
@@ -189,15 +46,42 @@
         <div class="container-xl">
             <div class="grid-container_attivita">
                 <!-- visualizza tipo di attivita nel box in alto -->
-                 @foreach ($attivita as $attiv)
-                    <div class="card carta">
-                        @if (in_array($attiv->tipo_attivita, [0]))
-                            @include('parziali.calendario', ['attivita' => $attiv])
-                        @elseif (in_array($attiv->tipo_attivita, [1, 2, 3, 4, 5, 6, 7, 8, 9]))
-                            @include('parziali.trekking', ['attivita' => $attiv])
-                        @endif
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-2">
+
+                        
+                                <form action="{{ url('attivita/index_attivita/10') }}" method="GET">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="filter1" name="filter1" value="option1">
+                                    <label class="form-check-label" for="filter1">Filtro 1</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="filter2" name="filter2" value="option2">
+                                    <label class="form-check-label" for="filter2">Filtro 2</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Applica Filtri</button>
+                            </form>
+                        </div>
+                        <div class="col-sm-10">
+
+                            @foreach ($attivita as $attiv)
+                                <div >
+                                    @if (in_array($attiv->tipo_attivita, [0]))
+                                        @include('parziali.calendario', ['attivita' => $attiv])
+                                    @elseif (in_array($attiv->tipo_attivita, [1, 2, 3, 4, 5, 6, 7, 8, 9]))
+                                        @include('parziali.trekking', ['attivita' => $attiv])
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+
                     </div>
-                @endforeach
+
+                </div>
+
+
 
             </div>
 

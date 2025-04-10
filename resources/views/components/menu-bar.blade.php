@@ -101,43 +101,7 @@
 
 <body>
     <div class="menu-bar">
-        @if (isset($user) &&
-                ($user->role == 'editor' || $user->role == 'amministratore' || $user->role == 'editor_accompagnatore'))
-            <li><a class="btn btn-success btn-sm" href="{{ url('/form/page1') }}">Aggiungi Attività</a></li>
-            <li>
-                <a type="button" class="btn btn-primary btn-sm" href="{{ url('/attivita/list') }}">Lista
-                    Attività
-                </a>
-            </li>
-        @endif
-
-
-        <form id="autoSubmitForm" method="post" action="{{ url('/attivita/index') }}">
-            @csrf
-            <div class="row barra">
-                <div class="col-md-12 d-flex align-items-center">
-                    <label for="attivita" class="me-2" style="width: max-content;">Seleziona Attività:</label>
-                    <select name="attivita" id="attivita" class="form-select me-3" style="max-width: 200px;">
-                        <option value="Tutti" selected>Tutti</option>
-                        @foreach ($attivita as $itema)
-                            <option value="{{ $itema->tipo_attivita }}">{{ $itema->nome }}</option>
-                        @endforeach
-                    </select>
-                    <label for="date" class="me-2" style="width: max-content;">Seleziona Da Data:</label>
-                    <select name="date" id="date" class="form-select" style="max-width: 200px;">
-                        <option value="dataOggi" selected>Oggi</option>
-                        @foreach ($date as $itemd)
-                            <option value="{{ $itemd->nome }}">{{ $itemd->descrizione }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-
-            </div>
-            <div class="mt-3">
-                <button type="submit" class="btn btn-primary invia">Visualizza</button>
-            </div>
-        </form>
+           
 
         @if (auth()->check())
             @if ($user->role == 'amministratore')
@@ -164,6 +128,9 @@
                 </div>
             @endif
         @endif
+
+        <a class="btn btn-primary btn-sm" href="{{ url('/attivita/index_attivita/10') }}">Visualizza attività</a>
+        
     </div>
 </body>
 
