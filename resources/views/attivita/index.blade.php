@@ -26,9 +26,35 @@
 
 
 <style>
+       #toggleFilters {
+            display: none;
+        }
+    @media (max-width: 768px) {
+        #toggleFilters {
+            display: block;
+        }
+
+        #filters {
+            position: fixed;
+            top: 220;
+            left: -250px;
+            /* Nascondi la colonna fuori dallo schermo */
+            width: 250px;
+            height: 100%;
+            background-color: #f8f9fa;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            transition: left 0.3s ease-in-out;
+            z-index: 1050;
+        }
 
 
+        #filters.active {
+            left: 0;
+            /* Mostra la colonna */
+        }
 
+    }
 </style>
 
 <x-logocai_anim />
@@ -49,25 +75,28 @@
 
                 <div class="container">
                     <div class="row">
-                        <div class="col-sm-2">
 
-                        
-                                <form action="{{ url('attivita/index_attivita/10') }}" method="GET">
+                        <button class="btn btn-primary" id="toggleFilters">Filtri</button>
+                        <div class="col-sm-2 colfiltri" id="filters">
+                            <form action="{{ url('attivita/index_filtri') }}" method="GET">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="filter1" name="filter1" value="option1">
+                                    <input class="form-check-input" type="checkbox" id="filter1" name="filter1"
+                                        value="1">
                                     <label class="form-check-label" for="filter1">Filtro 1</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="filter2" name="filter2" value="option2">
+                                    <input class="form-check-input" type="checkbox" id="filter2" name="filter2"
+                                        value="2">
                                     <label class="form-check-label" for="filter2">Filtro 2</label>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Applica Filtri</button>
                             </form>
                         </div>
+
                         <div class="col-sm-10">
 
                             @foreach ($attivita as $attiv)
-                                <div >
+                                <div>
                                     @if (in_array($attiv->tipo_attivita, [0]))
                                         @include('parziali.calendario', ['attivita' => $attiv])
                                     @elseif (in_array($attiv->tipo_attivita, [1, 2, 3, 4, 5, 6, 7, 8, 9]))
@@ -88,6 +117,11 @@
         </div>
     </div>
 
-
+    <script>
+        document.getElementById('toggleFilters').addEventListener('click', function() {
+            const filters = document.getElementById('filters');
+            filters.classList.toggle('active');
+        });
+    </script>
 
 </x-layout_cai>

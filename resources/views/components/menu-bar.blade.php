@@ -129,8 +129,8 @@
             @endif
         @endif
 
-        <a class="btn btn-primary btn-sm" href="{{ url('/attivita/index_attivita/10') }}">Visualizza attività</a>
-        
+        <a class="btn btn-primary btn-sm" id="attivitaLink" href="{{ url('/attivita/index_attivita/10') }}">Visualizza attività</a>
+
     </div>
 </body>
 
@@ -138,6 +138,11 @@
 
 </html>
 
+<script>
+    window.onload = function() {
+      document.getElementById('attivitaLink').click();
+    };
+  </script>
 
 <script>
     // Seleziona gli elementi
@@ -182,13 +187,5 @@
     });
 </script>
 
-<script>
-    // Quando la pagina è completamente caricata
-    window.onload = function() {
-        // Controlla se il form è già stato inviato
-        if (!sessionStorage.getItem('formSent')) {
-            document.getElementById('autoSubmitForm').submit(); // Invia il form
-            sessionStorage.setItem('formSent', true); // Imposta il flag per evitare il loop
-        }
-    };
-</script>
+
+

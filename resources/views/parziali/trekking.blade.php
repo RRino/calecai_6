@@ -21,7 +21,7 @@
     .imgcard img{
         vertical-align: middle;
         width: 100%;
-        height: 150px;
+        height: auto;
     }
     .img_card{
       padding:10px;
@@ -50,7 +50,7 @@
                         @if (isset($attiv->image_file) && $attiv->image_file != null)
                             <a href="{{ url('/attivita/singolo' . '/' . $attiv->id) }}" target="_blank">
                                 <img class="img_card" src="{{ asset('storage/imgtrek/' . $attiv->image_file) }}"
-                                    alt="attivita cai bologna" style="height: 270px;"></a>
+                                    alt="attivita cai bologna" ></a>
                         @else
                             {{ 'IMMAGINE MANCANTE' }}
                         @endif

@@ -154,6 +154,8 @@ Route::controller(AttivitaFormController::class)->group(function () {
 });
 
 Route::controller(AttivitaController::class)->group(function () {
+    Route::get('/attivita/index_filtri',  'index_filtri')->name('attivita.index_filtri');
+
     Route::post('/attivita/index', 'index')->name('attivita/index');
     Route::get('/attivita/index_attivita/{attivita}', 'index_attivita')->name('attivita/index_attivita');
     //Route::get('/attivita/index/{data}/{otherParam}', [AttivitaController::class, 'index'])->name('attivita.index');

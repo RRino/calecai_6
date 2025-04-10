@@ -112,7 +112,7 @@
                                             Seleziona_attività
                                         </a>
                                         <ul class="dropdown-menu" aria-labelledby="attivitaDropdown">
-                                            <li><a class="dropdown-item" href="/attivita/index_attivita/10">Tutte</a></li>
+                                            <li><a class="dropdown-item" href="/attivita/index_attivita/10" onclick="event.preventDefault(); window.location.href=this.href;">Tutte</a></li>
                                             <li><a class="dropdown-item" href="/attivita/index_attivita/1">Trekking</a></li>
                                             <li><a class="dropdown-item" href="/attivita/index_attivita/2">Corsi</a></li>
                                             <li><a class="dropdown-item" href="/attivita/index_attivita/3">Grandi_Trekking</a></li>
