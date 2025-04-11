@@ -5,7 +5,8 @@ namespace Database\Factories;
 use DateTime;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\DB;
+use App\Helpers\ActivityFaker;
+use App\Helpers\ValidModelValues;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Attivita>
@@ -19,28 +20,12 @@ class AttivitaFactory extends Factory
      */
     public function definition(): array
     {
-        $date_format = 'd-m-Y';
-        $start_day = fake()->dateTimeBetween('-1 year', '+1 year');
-        $end_day = new DateTime(($start_day->format(DateTimeInterface::ATOM)));
-        $end_day->modify('+7 days');
-        $end_days = [
-            $start_day,
-            $start_day,
-            $start_day,
-            fake()->dateTimeBetween($start_day, $end_day)
-        ];
-        $end_day = $end_days[array_rand($end_days)];
-        $sooner_enrollment_day = new DateTime($start_day->format(DateTimeInterface::ATOM));
-        $sooner_enrollment_day->modify('-3 months')->format(DateTimeInterface::ATOM);
-        $later_enrollment_day = new DateTime($start_day->format(DateTimeInterface::ATOM));
-        $later_enrollment_day->modify('-1 week');
-        $start_enrollment_day = fake()->dateTimeBetween(
-            $sooner_enrollment_day,
-            $later_enrollment_day
+        $actvityFaker = new ActivityFaker(
+            '-1 year',
+            '+1 year',
+            [1 => 0.4, 2 => 0.4, 7 => 0.1]
         );
-        $end_enrollment_day =
-            fake()->dateTimeBetween($later_enrollment_day, $start_day);
-
+        $date_format = 'd-m-Y';
         $max_absolute_attendee = 50;
         $min_attendee = fake()->numberBetween(1, $max_absolute_attendee);
 
@@ -74,24 +59,30 @@ class AttivitaFactory extends Factory
                 ),
             'specializzazione' =>
                 fake()->randomElement(
-                    ValidModelValues::getValues('tipo_specializzaziones', 'tipo_specializzazione')
+                    ValidModelValues::getValues(
+                        'tipo_specializzaziones',
+                        'tipo_specializzazione'
+                    )
                 ),
-            'data_inizio' => $start_day,
-            'data_fine' => $end_day,
+            'data_inizio' => $actvityFaker->getStartDay(),
+            'data_fine' => $actvityFaker->getEndDay(),
             'calendario' =>
                 fake()->randomElement(
-                    ValidModelValues::getValues('tipo_calendarios', 'tipo_calendario')
+                    ValidModelValues::getValues(
+                        'tipo_calendarios',
+                        'tipo_calendario'
+                    )
                 ),
-            'inizio_iscrizioni' => $start_enrollment_day,
-            'fine_iscrizioni' => fake()->dateTimeBetween(
-                $start_enrollment_day,
-                $end_enrollment_day
-            ),
+            'inizio_iscrizioni' => $actvityFaker->getStartEnrollmentDay(),
+            'fine_iscrizioni' => $actvityFaker->getEndEnrollmentDay(),
             'luogoritrovo' => fake()->word(),
-            'oraritrovo' => $start_day->format('Y-m-d h:II'),
+            'oraritrovo' => $actvityFaker->getStartDay()->format('Y-m-d h:II'),
             'tipologiatrasporto' => fake()->word(),
             'difficolta' => fake()->randomElement(
-                ValidModelValues::getValues('tipo_difficoltas', 'tipo_difficolta')
+                ValidModelValues::getValues(
+                    'tipo_difficoltas',
+                    'tipo_difficolta'
+                )
             ),
             'lunghezza' => fake()->word(),
             'dislivello' => fake()->word(),
@@ -105,7 +96,7 @@ class AttivitaFactory extends Factory
             'link_volantino' => fake()->url(),
             'email_user' => fake()->unique()->safeEmail(),
             'presentazione' => fake()->word(),
-            'data_presentazione' => $sooner_enrollment_day->format(($date_format)),
+            'data_presentazione' => $actvityFaker->getLauchDay(),
             'contatti' => fake()->word(),
             'altro' => fake()->word(),
             'altriorganizzatori' => fake()->word(),
@@ -119,14 +110,5 @@ class AttivitaFactory extends Factory
             'created_at' => now(),
             'updated_at' => now(),
         ];
-    }
-}
-
-class ValidModelValues
-{
-    public static function getValues(string $table, string $column)
-    {
-        $values = DB::table($table)->pluck($column);
-        return $values;
     }
 }
