@@ -25,8 +25,33 @@ class AttivitaController extends Controller
     public function index_filtri(Request $request)
     {
         $viewData = [];
-        $data     = Carbon::now()->toDateString();
 
+       if(!$request->has('today')) {
+        $data     = Carbon::now()->toDateString();
+        
+        } else {
+           
+            $data = $request->input('filterDate');
+            $data = now()->year.$data;
+            //dd($data);
+            // Converte la data in formato Y-m-d
+            //$data = Carbon::createFromFormat("d-m-Y", $data)->format("Y-m-d"); 
+        }
+      
+        if ($request->input('filter') == 'tutti') {
+            $viewData['attivita'] = Attivita::where('published', 1)
+                ->where(function ($query) use ($data) {
+                    $query->where(function ($query) use ($data) {
+                        $query->where('calendario', 0)
+                            ->whereDate('data_inizio', '>=', $data);
+                    })->orWhere(function ($query) use ($data) {
+                        //$query->where('tipo_attivita', 2)// calendario
+                        $query->where('calendario', '>=', 1)
+                            ->whereDate('data_fine', '>=', $data);
+                    });
+                })
+                ->get();
+        } else {
         // Recupera tutti i tipo_attivita distinti
         $viewData['tipo_attivita'] = Attivita::where('published', 1)
             ->distinct()
@@ -54,9 +79,10 @@ class AttivitaController extends Controller
                     ->whereDate('data_fine', '>=', $data);
             });
         });
-
         // Recupera i risultati
         $viewData['attivita'] = $query->get();
+    }
+        
        
         return view('attivita.index')->with("viewData", $viewData);
     }

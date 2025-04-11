@@ -60,7 +60,7 @@
 
                     <div style="min-height: 3em;">
                         <a href="{{ url('/attivita/singolo' . '/' . $attiv->id) }}" target="_blank"><strong
-                                style="color: darkgreen; font-size: 14px; font-weight: 770;">
+                                style="color: darkgreen; font-size: 16px; font-weight: 770;">
                                 {{ $attiv->titolo }}</strong></a><br>
                     </div>
                     <div class="note" style="min-height: 3em;">

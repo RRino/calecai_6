@@ -25,7 +25,7 @@
 
 
     .sito {
-        margin-top: 100px;
+        margin-top: 120px;
     }
 
     .sito a {
@@ -55,6 +55,7 @@
 
     nav.navbar.navbar-expand-lg.navbar-light.bg-light {
         background: #00366B !important;
+        z-index: 2000;
     }
 
     .navbar-expand-lg .navbar-nav .dropdown-menu {
@@ -62,7 +63,59 @@
         background: #00366B;
     }
 
+    @media (max-width: 900px) {
+        .container_logo.barb {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            justify-content: flex-start;
+        }
 
+        .container_logo img {
+            height: 100px;
+            left: 0px;
+            top: 0px;
+            position: absolute;
+        }
+
+        .sito {
+            margin-top: 120px;
+        }
+
+        .sito a {
+            color: white;
+            /* Cambia il colore del testo in bianco */
+            text-decoration: none;
+            /* Rimuove la sottolineatura */
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        .navbar-toggler {
+            border: none;
+            background: transparent;
+        }
+
+        .navbar-toggler:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        .navbar-nav .nav-link {
+            color: white !important;
+            /* Cambia il colore del testo in bianco */
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .cerca-form {
+            margin-top: 100px;
+        }
+    }
 </style>
 
 
@@ -87,23 +140,24 @@
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
                                 aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
+                                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
                             </button>
                             <div class="collapse navbar-collapse" id="navbarNav">
                                 <ul class="navbar-nav">
-                                    @if($user && $user->is_admin)
+                                    @if ($user && $user->is_admin)
+                                        <li class="nav-item">
+                                            <a class="nav-link active" aria-current="page" href="/attivita/list"><span
+                                                    style="color:yellow;">Lista</span></a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link active addattiv" aria-current="page"
+                                                href="/form/page1"><span
+                                                    style="color:yellow;">Aggiungi_attività</span></a>
+                                        </li>
+                                    @endif
+
                                     <li class="nav-item">
                                         <a class="nav-link active" aria-current="page"
-                                            href="/attivita/list"><span style="color:yellow;">Lista</span></a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link active addattiv" aria-current="page"
-                                            href="/form/page1"><span style="color:yellow;">Aggiungi_attività</span></a>
-                                    </li>
-                                    @endif
-                                   
-                                    <li class="nav-item">
-                                        <a  class="nav-link active" aria-current="page"
                                             href="/fullcalender/showCalendar_list">Calendario</a>
                                     </li>
                                     <li class="nav-item dropdown">
@@ -112,17 +166,26 @@
                                             Seleziona_attività
                                         </a>
                                         <ul class="dropdown-menu" aria-labelledby="attivitaDropdown">
-                                            <li><a class="dropdown-item" href="/attivita/index_attivita/10" onclick="event.preventDefault(); window.location.href=this.href;">Tutte</a></li>
-                                            <li><a class="dropdown-item" href="/attivita/index_attivita/1">Trekking</a></li>
-                                            <li><a class="dropdown-item" href="/attivita/index_attivita/2">Corsi</a></li>
-                                            <li><a class="dropdown-item" href="/attivita/index_attivita/3">Grandi_Trekking</a></li>
-                                            <li><a class="dropdown-item" href="/attivita/index_attivita/4">Scialpinismo</a></li>
+                                            <li><a class="dropdown-item" href="/attivita/index_attivita/10"
+                                                    onclick="event.preventDefault(); window.location.href=this.href;">Tutte</a>
+                                            </li>
+                                            <li><a class="dropdown-item" href="/attivita/index_attivita/1">Trekking</a>
+                                            </li>
+                                            <li><a class="dropdown-item" href="/attivita/index_attivita/2">Corsi</a>
+                                            </li>
+                                            <li><a class="dropdown-item"
+                                                    href="/attivita/index_attivita/3">Grandi_Trekking</a></li>
+                                            <li><a class="dropdown-item"
+                                                    href="/attivita/index_attivita/4">Scialpinismo</a></li>
 
-                                            <li><a class="dropdown-item" href="/attivita/index_attivita/5">Ciclo_escursionismo</a></li>
-                                            <li><a class="dropdown-item" href="/attivita/index_attivita/6">Alpinismo_giovanile</a></li>
-                                            <li><a class="dropdown-item" href="/attivita/index_attivita/8">Evendi_CAIBO</a></li>
-                                       
-                                          </ul>
+                                            <li><a class="dropdown-item"
+                                                    href="/attivita/index_attivita/5">Ciclo_escursionismo</a></li>
+                                            <li><a class="dropdown-item"
+                                                    href="/attivita/index_attivita/6">Alpinismo_giovanile</a></li>
+                                            <li><a class="dropdown-item"
+                                                    href="/attivita/index_attivita/8">Evendi_CAIBO</a></li>
+
+                                        </ul>
                                     </li>
                                     <!--
                                     <li class="nav-item dropdown">

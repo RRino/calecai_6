@@ -52,7 +52,7 @@ $tipovolantino = TipoVolantino::where('published', 1)->get();
         </div>
 
         <div style="min-height: 3em;">
-            <strong style="color: darkgreen; font-size: 14px; font-weight: 770;"> {{ $attiv->titolo }}</strong><br>
+            <strong style="color: darkgreen; font-size: 16px; font-weight: 770;"> {{ $attiv->titolo }}</strong><br>
         </div>
         <div class="note" style="min-height: 3em;">
             <!-- Note sottotitolo-->
